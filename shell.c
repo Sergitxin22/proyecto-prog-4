@@ -8,33 +8,31 @@
 #define MAX_PROMPT_LEN 128
 
 // Gets a line of input from the user
-char* prompt() {
-    char *result = NULL;
-    size_t size = MAX_PROMPT_LEN;
-
+int prompt(char** line) {
+    *line = malloc(MAX_ARG_LEN * sizeof(char));
+    if (*line == NULL) {
+        perror("malloc failed");
+        return -1;
+    }
     printf("shell > ");
 
-    // Reads the input and stores the status value of the function
-    int status = getline(&result, &size, stdin);
-    // If the status is an error
-    if (status == -1) {
-        if (feof(stdin)) {
-            // User typed an EOF (CTRL + C), the program should exit
-            printf("EOF detected. Exiting");
-            exit(0);
-        } else {
-            perror("input read error: i/o or allocation error");
-            exit(1);
-        }
+    if (fgets(*line, MAX_ARG_LEN, stdin) == NULL) {
+        perror("i/o error when prompting");
+        return -1;
     }
-    return result;
+
+    size_t len = strlen(*line);
+    if (len > 0 && (*line)[len - 1] == '\n') {
+        (*line)[len - 1] = '\0';
+    }
+    return 0;
 }
 
 
 // Splits the input line into arguments. It also provides an argument count pointer
-char** splitArgs(const char *input_line, int *arg_count) {
+char** splitArgs(char *input_line, int *arg_count) {
     char** result = malloc(MAX_ARGS * sizeof(char*));
-    char *arg = malloc(MAX_ARG_LEN * sizeof(char)); 
+    char* arg = malloc(MAX_ARG_LEN * sizeof(char)); 
     int i = 0;        // Received input iterator
     int j = 0;        // Argument iterator (resets every split)
     int k = 0;        // Result array iterator
@@ -62,9 +60,11 @@ char** splitArgs(const char *input_line, int *arg_count) {
             j++;
             result[k] = malloc(j * sizeof(char)); // Allocates just enough space for the argument
             strcpy(result[k], arg); // The argument is copied
+            free(arg);
             k++;
             (*arg_count)++;
             j = 0; // Reset the argument buffer
+            arg = malloc(MAX_ARG_LEN * sizeof(char));
         }
         i++;
     }
@@ -76,19 +76,22 @@ char** splitArgs(const char *input_line, int *arg_count) {
         for (int i = 0; i < *arg_count; i++) {
             free(result[i]);
         }
+        // Also frees the current argument
+        free(arg);
         (*arg_count) = -1;
         return result;
     }
+
     // Once the line iteration is over, we check whether the last argument is not empty, and we add it if so
     if (j > 0) {
         arg[j] = '\0';
         j++;
-        result[k] = malloc((j) * sizeof(char));
+        result[k] = malloc(j * sizeof(char));
         strcpy(result[k], arg);
+        free(arg);
         (*arg_count)++;
         k++;
     }
-    free(arg);
     result[k] = NULL; // Appends a null character to represent the array is over
     return result;
 }
