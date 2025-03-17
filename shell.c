@@ -9,14 +9,14 @@
 
 // Gets a line of input from the user
 int prompt(char** line) {
-    *line = malloc(MAX_ARG_LEN * sizeof(char));
+    *line = malloc(MAX_PROMPT_LEN * sizeof(char));
     if (*line == NULL) {
         perror("malloc failed");
         return -1;
     }
     printf("shell > ");
 
-    if (fgets(*line, MAX_ARG_LEN, stdin) == NULL) {
+    if (fgets(*line, MAX_PROMPT_LEN, stdin) == NULL) {
         perror("i/o error when prompting");
         return -1;
     }
