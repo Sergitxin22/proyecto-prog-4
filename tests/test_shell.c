@@ -7,9 +7,7 @@
 
 void testPrintArgs(char *string, int *arg_count);
 
-int main(int argc, char const *argv[])
-{
-    
+void inputTests() {   
     int count;
     // Regular input test
     testPrintArgs("Hello world! \"This string\" has 6 arguments", &count);
@@ -26,8 +24,13 @@ int main(int argc, char const *argv[])
     // Wrong use of quotes test
     testPrintArgs("Hello world! \"\"this string has 7 arguments", &count);
     printf("\n");
-    // Shell prompt test
-    printf("%s", prompt());
+}
+
+void promptTest() {
+    char *line = NULL;
+    int status = prompt(&line);
+    
+    printf("Status code: %d\nObtained input: %s\n", status, line);
     return 0;
 }
 
