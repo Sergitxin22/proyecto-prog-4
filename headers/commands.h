@@ -1,8 +1,6 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-
-int cmd_ver(int argc, char **args);
+int ver_cmd(int argc, char **args);
 int mkdir();
 #endif
-
