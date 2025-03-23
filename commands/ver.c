@@ -1,5 +1,6 @@
 #include <string.h>
-
+#include <stdio.h>
+#include "../headers/commands.h"
 /**
  * @brief Muestra la versión del shell
  *

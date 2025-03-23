@@ -3,9 +3,20 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+#include "../headers/exec.h"
 #include "../shell.c"
 
-void testPrintArgs(char *string, int *arg_count);
+void testPrintArgs(char *string, int *arg_count) {
+    char **args = splitArgs(string, arg_count);
+
+    for (int i = 0; i < *arg_count; i++) {
+        printf("Argument %d: %s\n", i, args[i]);
+    }
+
+    printf("Total arguments printed: %d\n", *arg_count);
+    free(args);
+}
+
 
 void inputTests() {   
     int count;
@@ -31,17 +42,19 @@ void promptTest() {
     int status = prompt(&line);
     
     printf("Status code: %d\nObtained input: %s\n", status, line);
-    return 0;
 }
 
-void testPrintArgs(char *string, int *arg_count) {
-    char **args = splitArgs(string, arg_count);
 
-    for (int i = 0; i < *arg_count; i++) {
-        printf("Argument %d: %s\n", i, args[i]);
-    }
-    
-    printf("Total arguments printed: %d\n", *arg_count);
-    free(args);
+void execTest() {
+    //Deberia dar fallo
+    char *command[] = {"PACO"};
+    char **comandoPtr = command;
+    exec(comandoPtr);
 }
 
+
+int main(){
+  inputTests();
+    execTest();
+
+}
