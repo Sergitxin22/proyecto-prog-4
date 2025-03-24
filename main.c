@@ -4,12 +4,10 @@
 #include <stdlib.h>
 
 // TODO: remove this
-void testPrintArgs(char *string, int *arg_count)
-{
+void testPrintArgs(char *string, int *arg_count) {
     char **args = splitArgs(string, arg_count);
 
-    for (int i = 0; i < *arg_count; i++)
-    {
+    for (int i = 0; i < *arg_count; i++) {
         printf("Argument %d: %s\n", i, args[i]);
     }
 
@@ -17,8 +15,7 @@ void testPrintArgs(char *string, int *arg_count)
     free(args);
 }
 
-int main(int argc, char const *argv[])
-{
+int main(int argc, char const *argv[]) {
     for (;;)
     {
         char *line = NULL; // Received input line
@@ -35,8 +32,7 @@ int main(int argc, char const *argv[])
 
         // Splits the input line into arguments
         char **args = splitArgs(line, &arg_count);
-        if (arg_count != -1)
-        {
+        if (arg_count != -1) {
             // If the were no errors, prints arguments and frees them after
             // TODO: for testing purposes only. The final version shouldn't
             // print each argument
