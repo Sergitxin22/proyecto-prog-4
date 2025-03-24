@@ -20,6 +20,7 @@ const int lenCommand = sizeof(commands) / sizeof(Command);
 
 /**
  *
+ * @param argc El número de argumentos del programa
  * @param args Los argumentos del programa
  * @return Un entero que devuelve el codigo de ejecuccion del comando para saber si ha sido correcto
  * o ha habido algun fallo.
