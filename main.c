@@ -1,6 +1,7 @@
-#include "shell.c"
-#include <strings.h>
+#include "headers/shell.h"
 #include "headers/exec.h"
+#include <strings.h>
+#include <stdlib.h>
 
 // TODO: remove this
 void testPrintArgs(char *string, int *arg_count)
