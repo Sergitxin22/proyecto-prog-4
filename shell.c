@@ -1,11 +1,8 @@
+#include "headers/shell.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-
-#define MAX_ARGS 128
-#define MAX_ARG_LEN 64
-#define MAX_PROMPT_LEN 128
 
 // Gets a line of input from the user
 int prompt(char** line) {
