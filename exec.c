@@ -28,11 +28,10 @@ const int lenCommand = sizeof(commands) / sizeof(Command);
 int exec(int argc, char **args)
 {
 
-    // Si el primer argumento (nombre del programa) esta vacio , lanzamos error
-    if (strcmp(args[0], "") == 0)
+    // Si el primer argumento (nombre del programa) es nulo, lanzamos error
+    if (args[0] == NULL)
     {
-        perror("Error : No se ha recibido ningun comando! \n");
-        return -1;
+        return 0;
     }
 
     // Comprueba si el primer argumento (Empieza en 0) el cual es el nombre del programa
