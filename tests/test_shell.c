@@ -47,8 +47,8 @@ void promptTest() {
 
 void execTest() {
     //Deberia dar fallo
-    char *command[] = {"PACO"};
-    char **comandoPtr = command;
+    int count = 0;
+    char **comandoPtr = splitArgs("mkdir paco2 paco3", &count);
     exec(comandoPtr);
 }
 

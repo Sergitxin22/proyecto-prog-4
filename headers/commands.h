@@ -3,6 +3,6 @@
 
 
 int cmd_ver(int argc, char **args);
-int mkdir();
+int mkdir_cmd(char **args);
 #endif
 
