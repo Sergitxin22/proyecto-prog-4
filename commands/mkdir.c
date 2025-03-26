@@ -9,7 +9,7 @@
 //TODO : IMPLEMENTAR -P
 
 */
-int mkdir_cmd(char** args) {
+int mkdir_cmd(int argc ,char** args) {
 
   //Comprobar argumentos
   if(args == NULL || args[0] == NULL) {

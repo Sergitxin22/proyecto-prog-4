@@ -1,5 +1,4 @@
 #include "headers/shell.h"
-#include "headers/exec.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>

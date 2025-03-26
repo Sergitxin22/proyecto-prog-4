@@ -2,6 +2,6 @@
 #define COMMANDS_H
 
 
-int cmd_ver(int argc, char **args);
-int mkdir_cmd(char **args);
+int ver_cmd(int argc, char **args);
+int mkdir_cmd(int argc , char **args);
 #endif
