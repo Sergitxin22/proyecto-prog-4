@@ -13,7 +13,9 @@ int pp_cmd(int argc, char **args)
 const Command commands[] = {
     {"PP", &pp_cmd},
     {"mkdir", &mkdir},
-    {"ver", &ver_cmd}};
+    {"ver", &ver_cmd},
+    {"print", &print_cmd},
+};
 
 // Tamaño del Array de comandos
 const int lenCommand = sizeof(commands) / sizeof(Command);
