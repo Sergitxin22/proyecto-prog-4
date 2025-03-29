@@ -29,7 +29,6 @@ int main(int argc, char const *argv[]) {
             free(line);
             return 0;
         }
-
         // Splits the input line into arguments
         char **args = splitArgs(line, &arg_count);
         if (arg_count != -1) {
@@ -43,6 +42,9 @@ int main(int argc, char const *argv[]) {
             //     free(args[i]);
             // }
             exec(arg_count, args);
+        }
+        for (int i = 0; i < arg_count; i++) {
+            free(args[i]);
         }
         free(args);
         free(line);
