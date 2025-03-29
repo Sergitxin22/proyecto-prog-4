@@ -59,6 +59,7 @@ char** splitArgs(char *input_line, int *arg_count) {
             strcpy(result[k], arg); // The argument is copied
             free(arg);
             k++;
+            // TODO: K igual no es necsario por argu_count
             (*arg_count)++;
             j = 0; // Reset the argument buffer
             arg = malloc(MAX_ARG_LEN * sizeof(char));
@@ -89,6 +90,12 @@ char** splitArgs(char *input_line, int *arg_count) {
         (*arg_count)++;
         k++;
     }
+    // Si el input está vacío, al final de la función i será 0
+    // En ese caso, también hay que liberar memoria
+    if (i == 0) {
+        free(arg);
+    }
+    
     result[k] = NULL; // Appends a null character to represent the array is over
     return result;
 }
@@ -106,7 +113,8 @@ int pp_cmd(int argc, char **args)
 const Command commands[] = {
     {"PP", &pp_cmd},
     {"mkdir", &mkdir_cmd},
-    {"ver", &ver_cmd}};
+    {"ver", &ver_cmd},
+    {"writeline", &writeline_cmd}};
 
 // Tamaño del Array de comandos
 const int lenCommand = sizeof(commands) / sizeof(Command);
