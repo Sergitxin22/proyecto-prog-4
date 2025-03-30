@@ -1,9 +1,9 @@
-#include "headers/shell.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "headers/commands.h"
+#include "headers/shell.h"
 // Gets a line of input from the user
 int prompt(char** line) {
     *line = malloc(MAX_PROMPT_LEN * sizeof(char));
@@ -100,21 +100,13 @@ char** splitArgs(char *input_line, int *arg_count) {
     return result;
 }
 
-//EXEC
-
-
-// Comando de prueba
-int pp_cmd(int argc, char **args)
-{
-    printf("Comando PP ejecutado correctamente.\n");
-}
-
 // Array de Comandos (Structs)
 const Command commands[] = {
-    {"PP", &pp_cmd},
     {"mkdir", &mkdir_cmd},
     {"ver", &ver_cmd},
-    {"writeline", &writeline_cmd}};
+    {"print", &print_cmd},
+    {"writeline", &writeline_cmd}
+};
 
 // Tamaño del Array de comandos
 const int lenCommand = sizeof(commands) / sizeof(Command);
