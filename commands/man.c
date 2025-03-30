@@ -303,5 +303,6 @@ int print_command(char* name) {
 int man_cmd(int arc, char **args) {
     char* name = args[1];
     print_command(name);
+    cargar_csvs();
     return 0;
 }
