@@ -9,7 +9,7 @@
 int guardar_comando(char *name, char *summary, char *synopsis, char *desc){
     sqlite3 *db;
     sqlite3_stmt *stmt;
-    int db_found = sqlite3_open("../db/local.db", &db);
+    int db_found = sqlite3_open("./db/local.db", &db);
     
     if (db_found != SQLITE_OK) {
         printf("Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
@@ -40,7 +40,7 @@ int guardar_comando(char *name, char *summary, char *synopsis, char *desc){
 int guardar_option(char *charkey, char *description, char *cmd_name){
     sqlite3 *db;
     sqlite3_stmt *stmt;
-    int db_found = sqlite3_open("../db/local.db", &db);
+    int db_found = sqlite3_open("./db/local.db", &db);
     
     if (db_found != SQLITE_OK) {
         printf("Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
@@ -68,7 +68,7 @@ int guardar_option(char *charkey, char *description, char *cmd_name){
 }
 
 int cargar_comandos() {
-    FILE *file = fopen("../resources/csv/commands.csv", "r");
+    FILE *file = fopen("./resources/csv/commands.csv", "r");
     if (!file) {
         perror("Error al abrir el archivo");
         return 1;
@@ -112,7 +112,7 @@ int cargar_comandos() {
 }
 
 int cargar_opciones() {
-    FILE *file = fopen("../resources/csv/params.csv", "r");
+    FILE *file = fopen("./resources/csv/params.csv", "r");
     if (!file) {
         perror("Error al abrir el archivo");
         return 1;
@@ -171,7 +171,7 @@ int print_params(char* name) {
     int rc;
     
     // Abrir la base de datos
-    rc = sqlite3_open("../db/local.db", &db);
+    rc = sqlite3_open("./db/local.db", &db);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
@@ -230,7 +230,7 @@ int print_command(char* name) {
     int rc;
     
     // Abrir la base de datos
-    rc = sqlite3_open("../db/local.db", &db);
+    rc = sqlite3_open("./db/local.db", &db);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
@@ -303,6 +303,6 @@ int print_command(char* name) {
 int man_cmd(int arc, char **args) {
     char* name = args[1];
     print_command(name);
-    cargar_csvs();
+    // cargar_csvs();
     return 0;
 }
