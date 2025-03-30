@@ -1,0 +1,3 @@
+id,name,summary,synopsis,description
+1,ver,display shell version information,ver [OPTION]...,Display the version of the shell.
+1,vera,prueba otro comando,vera [OPTIONES]...,prueba otro comando.
