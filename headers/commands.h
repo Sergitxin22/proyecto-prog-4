@@ -8,4 +8,5 @@ int writeline_cmd(int arc, char **args);
 int man_cmd(int arc, char **args);
 int printdir_cmd(int argc, char **args);
 int cat_cmd(int arc, char **args);
+int cd_cmd(int argc, char **args);
 #endif
