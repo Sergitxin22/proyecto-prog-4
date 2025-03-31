@@ -36,8 +36,22 @@ void test_printdir() {
     free(args2);
 }
 
+void test_cd() {
+    char **args = malloc(sizeof(char *));
+    char *arg = "cd";
+    char *arg2 = "..";
+    args[0] = arg;
+    args[1] = arg2;
+    cd_cmd(2, args);
+    // Debería de imprimir el directorio 
+    // anterior al de la ejecución del test
+    printdir_cmd(1, args);
+    free(args);
+}
+
 int main(int argc, char const *argv[]) {
     test_ver();
     test_printdir();
+    test_cd();
     return 0;
 }
