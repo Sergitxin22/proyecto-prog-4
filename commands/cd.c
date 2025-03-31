@@ -3,8 +3,8 @@
 #include <unistd.h>
 
 int cd_cmd(int argc, char** args) {
-    if (argc > 2) {
-        perror("cd: too many arguments");
+    if (argc != 2) {
+        perror("cd: incorrect number of arguments");
         return -2;
     }
 
