@@ -7,4 +7,5 @@ int print_cmd(int argc, char **args);
 int writeline_cmd(int arc, char **args);
 int man_cmd(int arc, char **args);
 int printdir_cmd(int argc, char **args);
+int cat_cmd(int arc, char **args);
 #endif
