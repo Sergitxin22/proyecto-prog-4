@@ -108,7 +108,8 @@ const Command commands[] = {
     {"print", &print_cmd},
     {"writeline", &writeline_cmd},
     {"man", &man_cmd},
-    {"printdir", &printdir_cmd}
+    {"printdir", &printdir_cmd},
+    {"cat", &cat_cmd}
 };
 
 // Tamaño del Array de comandos
