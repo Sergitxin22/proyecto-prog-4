@@ -2,18 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-
-// TODO: remove this
-void testPrintArgs(char *string, int *arg_count) {
-    char **args = splitArgs(string, arg_count);
-
-    for (int i = 0; i < *arg_count; i++) {
-        printf("Argument %d: %s\n", i, args[i]);
-    }
-
-    printf("Total arguments printed: %d\n", *arg_count);
-    free(args);
-}
+#include <unistd.h>
 
 int main(int argc, char const *argv[]) {
     for (;;)
@@ -32,17 +21,9 @@ int main(int argc, char const *argv[]) {
         // Splits the input line into arguments
         char **args = splitArgs(line, &arg_count);
         if (arg_count != -1) {
-            // If the were no errors, prints arguments and frees them after
-            // TODO: for testing purposes only. The final version shouldn't
-            // print each argument
-            // for (int i = 0; i < arg_count; i++) {
-            //     printf("\"%s\"\n", args[i]);
-            // }
-            // for (int i = 0; i < arg_count; i++) {
-            //     free(args[i]);
-            // }
             exec(arg_count, args);
         }
+
         for (int i = 0; i < arg_count; i++) {
             free(args[i]);
         }

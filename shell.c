@@ -4,6 +4,7 @@
 #include <string.h>
 #include "headers/commands.h"
 #include "headers/shell.h"
+
 // Gets a line of input from the user
 int prompt(char** line) {
     *line = malloc(MAX_PROMPT_LEN * sizeof(char));
@@ -106,7 +107,8 @@ const Command commands[] = {
     {"ver", &ver_cmd},
     {"print", &print_cmd},
     {"writeline", &writeline_cmd},
-    {"man", &man_cmd}
+    {"man", &man_cmd},
+    {"printdir", &printdir_cmd}
 };
 
 // Tamaño del Array de comandos
