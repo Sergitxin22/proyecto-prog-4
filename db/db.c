@@ -18,6 +18,35 @@ sqlite3* openDatabase(char *dbPath) {
     }
     return db;
 }
+
+void deleteUserDB(char *username){
+  //Abrir base de datos
+  sqlite3 *db = openDatabase("db/database.db");
+  //Primero comprobar a ver si el usuario que nos han pasado existe..
+  if(!userExists(db,username)){
+    printf("El usuario %s no existe!",username);
+	return;
+  }
+
+  char *sql = "DELETE FROM USER WHERE NAME = ?";
+  sqlite3_stmt *stmt;
+  //Comprobar que la consulta SQL esta BIEN.
+  if(sqlite3_prepare_v2(db,sql,-1,&stmt, NULL) != SQLITE_OK){
+    fprintf(stderr, "Error en la consulta SQL: %s\n", sqlite3_errmsg(db));
+    return;
+  }
+  //Parametrizar la consulta
+  sqlite3_bind_text(stmt, 1, username, -1, SQLITE_STATIC);
+
+   if (sqlite3_step(stmt) != SQLITE_DONE) {
+        fprintf(stderr, "Error al borrar usuario: %s\n", sqlite3_errmsg(db));
+    } else {
+        printf("Usuario %s eliminado ! \n",username);
+    }
+  sqlite3_finalize(stmt);
+  sqlite3_close(db);
+
+  }
 int userExists(sqlite3 *db, char *username) {
     const char *sql = "SELECT COUNT(*) FROM USER WHERE NAME = ?;";
     sqlite3_stmt *stmt;
@@ -129,10 +158,11 @@ User * getAllUsers(int *count) {
  Strdup asigna memoria dinamica en el heap asi que hay que liberarlo.
  */
 void freeUsers(User *users,int count) {
-    free(users);
         for (int i = 0; i < count; ++i) {
         free(users[i].username);
         free(users[i].password);
     }
+    free(users);
+
 
 }

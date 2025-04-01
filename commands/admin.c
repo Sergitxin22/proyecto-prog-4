@@ -1,28 +1,37 @@
 #include "../headers/commands.h"
-
 #include <stdio.h>
-
 #include "../headers/db.h"
-
 #include "../lib/sqlite3/sqlite3.h"
 
 
 /*
 
-* Comando que muestra los usuarios registrados en la app.
+* Comando que muestra los usuarios registrados en la Shell.
 Los usuarios son recuperados de la BD.
 */
+
+
 void showUsers() {
   int count = 0;
   //Recibe un array dinamico de users
-  User * users = getAllUsers( & count);
+  User * users = getAllUsers(&count);
   printf("Usuarios totales en el sistema: %d \n", count);
   for (int i = 0; i < count; i++) {
-    printf("%d) %s c \n", i + 1, users[i].username, users[i].isAdmin);
+    printf("%d) %s c \n", i + 1, users[i].username);
   }
   //Lo liberamos
   freeUsers(users, count);
+
 }
+
+void deleteUser(){
+  char userABorrar[30];
+  showUsers();
+  printf("Selecciona el nombre del usuario que quieres borrar!");
+  scanf("%29s",userABorrar);
+  deleteUserDB(userABorrar);
+
+ }
 
 /**
 * Funcion que lee y muestra en pantalla los ficheros de logs.
@@ -36,7 +45,7 @@ int checkLogs(char * filePath) {
     return -1;
   }
 
-  char str[100];
+  char str[2048]; //Buffer
   printf("Mostrando LOGS");
   while (fgets(str, 100, file) != NULL) {
     fprintf(stdout, "%s", str);
@@ -57,13 +66,11 @@ void addUsers() {
 
   printf("Deberia ser el usuario ADMIN? (1 = Si, 0 = No): ");
   //Las unicas opciones posibles son 0 o 1 .
-  while (scanf("%d", & isAdmin) != 1 || (isAdmin != 0 && isAdmin != 1)) {
+  while (scanf("%d",&isAdmin) != 1 || (isAdmin != 0 && isAdmin != 1)) {
     printf("Entrada invalida! Los valores posibles son 0 o 1: ");
     while (getchar() != '\n'); // Limpiar el buffer
   }
-
   insertUsers(username, password, isAdmin);
-
 }
 
 void showMenu() {
@@ -76,9 +83,13 @@ void showMenu() {
 
 }
 
-int admin_cmd(int argc, char ** args) {
+int admin_cmd(int argc, char **args) {
   int opcion = 0;
 
+  if(argc > 1){
+    perror("Este comando no recibe argumentos!");
+    return -1;
+}
   // Mostrar el menú inicial
   showMenu();
   printf("Selecciona una opcion: ");
@@ -96,15 +107,15 @@ int admin_cmd(int argc, char ** args) {
     }
     // Opción 3: Borrar usuarios
     else if (opcion == 3) {
-      //    deleteUsers();
+     deleteUser();
     }
     // Opción 4: Mostrar logs
     else if (opcion == 4) {
-      checkLogs("paco.txt");
+      checkLogs("logs.txt");
     }
     // Opción 5: Salir del programa
     else if (opcion == 5) {
-      printf("Saliendo del programa...\n");
+      printf("Saliendo del panel de administracion...\n");
       break;
     }
     // Caso por defecto: opción inválida
@@ -117,12 +128,6 @@ int admin_cmd(int argc, char ** args) {
     printf("Selecciona una opcion: ");
     scanf("%d", & opcion);
   }
-
-  return 0;
+return 0;
 }
 
-//Prueba
-int main(void) {
-  admin_cmd(0, NULL);
-
-}
