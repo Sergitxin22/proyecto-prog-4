@@ -5,8 +5,8 @@
 
 /**
  * @brief Escribe en un fichero la línea proporcionada como argumento
- * 
  * writeline [OPCION] <dir. fichero> <texto a escribir>
+ * 
  * Si se proporciona la opción "-a", la línea se añadirá en una linea nueva.
  *
  * @param argc Cantidad de argumentos recibidos

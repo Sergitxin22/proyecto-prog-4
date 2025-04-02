@@ -2,6 +2,15 @@
 #include <stdio.h>
 #include <unistd.h>
 
+/**
+ * @brief Cambia el directorio de trabajo (working directory) al
+ * PATH proporcionado como argumento
+ * cd <directorio>
+ *
+ * @param argc Cantidad de argumentos recibidos
+ * @param args Array de argumentos recibidos
+ * @return int 0 si la ejecución fue exitosa
+ */
 int cd_cmd(int argc, char** args) {
     if (argc != 2) {
         perror("cd: incorrect number of arguments");

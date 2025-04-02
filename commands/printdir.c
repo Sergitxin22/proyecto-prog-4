@@ -4,12 +4,12 @@
 #include <unistd.h>
 
 /**
- * @brief Muestra la versión del shell
- *
- * Esta función imprime la versión del shell. Si recibe el
- * argumento "-n", muestra la versión corta. En cualquier
- * otro caso, muestra la versión completa.
- *
+ * @brief Imprime el directorio actual
+ * printdir [OPCIÓN]
+ * 
+ * Si recibe el argumento -n, imprime solo el directorio,
+ * sin texto adicional.
+ * 
  * @param argc Cantidad de argumentos recibidos
  * @param args Arreglo de argumentos recibidos
  * @return int 0 si la ejecución fue exitosa
