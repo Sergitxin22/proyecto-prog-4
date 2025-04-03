@@ -76,10 +76,28 @@ void test_writeline() {
     free(args2);
 }
 
+void test_listdir() {
+    char **args = malloc(sizeof(char *) * 1);
+    char *arg = "listdir";
+    args[0] = arg;
+    listdir_cmd(1, args);
+    
+    char **args2 = malloc(sizeof(char *) * 2);
+    arg = "listdir";
+    char *arg2 = "..";
+    args2[0] = arg;
+    args2[1] = arg2;
+    listdir_cmd(2, args2);
+    
+    free(args);
+    free(args2);
+}
+
 int main(int argc, char const *argv[]) {
     test_ver();
     test_printdir();
     test_cd();
     test_writeline();
+    test_listdir();
     return 0;
 }
