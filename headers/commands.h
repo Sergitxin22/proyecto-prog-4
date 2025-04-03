@@ -10,4 +10,5 @@ int printdir_cmd(int argc, char **args);
 int cat_cmd(int arc, char **args);
 int cd_cmd(int argc, char **args);
 int admin_cmd(int argc, char **args);
+int listdir_cmd(int argc, char **args);
 #endif

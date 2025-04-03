@@ -115,7 +115,8 @@ const Command commands[] = {
     {"printdir", &printdir_cmd},
     {"cat", &cat_cmd},
     {"cd", &cd_cmd},
-    {"admin",&admin_cmd}
+    {"admin",&admin_cmd},
+    {"listdir", &listdir_cmd}
 };
 
 // Tamaño del Array de comandos
