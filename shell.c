@@ -12,7 +12,11 @@ int prompt(char** line) {
         fprintf(stdout, "malloc failed");
         return -1;
     }
+    
+    printf("\033[0;34m"); // Establece el color de la terminal a azul
     printf("shell > ");
+    printf("\033[0m"); // Resetea el color al por defecto
+
 
     if (fgets(*line, MAX_PROMPT_LEN, stdin) == NULL) {
         fprintf(stdout, "i/o error when prompting");
