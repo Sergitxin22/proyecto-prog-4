@@ -13,7 +13,7 @@
  */
 int cd_cmd(int argc, char** args) {
     if (argc != 2) {
-        perror("cd: incorrect number of arguments");
+        fprintf(stderr, "cd: incorrect number of arguments\n");
         return -2;
     }
 

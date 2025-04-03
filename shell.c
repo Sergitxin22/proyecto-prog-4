@@ -9,13 +9,13 @@
 int prompt(char** line) {
     *line = malloc(MAX_PROMPT_LEN * sizeof(char));
     if (*line == NULL) {
-        perror("malloc failed");
+        fprintf(stdout, "malloc failed");
         return -1;
     }
     printf("shell > ");
 
     if (fgets(*line, MAX_PROMPT_LEN, stdin) == NULL) {
-        perror("i/o error when prompting");
+        fprintf(stdout, "i/o error when prompting");
         return -1;
     }
 

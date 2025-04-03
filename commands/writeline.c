@@ -34,7 +34,7 @@ int writeline_cmd(int argc, char **args) {
 
         FILE *f = fopen(file_path, mode);
         if (f == NULL) {
-            perror("writeline: not such file");
+            fprintf(stderr, "writeline: not such file");
           return -1;
         }
 
@@ -47,7 +47,7 @@ int writeline_cmd(int argc, char **args) {
         
         return 0;
     } else {
-        perror("writeline: not enough arguments");
+        fprintf(stderr, "writeline: not enough arguments");
         return -1;
     }
 }
