@@ -122,38 +122,41 @@ const Command commands[] = {
     {"printcommands", &printcommands_cmd}
 const int lenCommand = sizeof(commands) / sizeof(Command);
 
+
 /**
- *
- * @param argc El número de argumentos del programa
- * @param args Los argumentos del programa
- * @return Un entero que devuelve el codigo de ejecuccion del comando para saber si ha sido correcto
- * o ha habido algun fallo.
+ * @brief Itera sobre el array de comandos y devuelve un array dinámico con los nombres de los comandos.
+ * 
+ * @return char** Array dinámico con los nombres de los comandos (NULL-terminated).
+ *         El usuario es responsable de liberar la memoria del array y de cada string.
  */
-int exec(int argc, char **args)
-{
+char** getcommands(size_t* count) {
+    // Calcular el número de comandos
+    *count = sizeof(commands) / sizeof(commands[0]);
 
-    // Si el primer argumento (nombre del programa) es nulo, lanzamos error
-    if (args[0] == NULL)
-    {
-        return 0;
+    // Reservar memoria para el array de strings
+    char** commandList = malloc((*count + 1) * sizeof(char*)); // +1 para el terminador NULL
+    if (commandList == NULL) {
+        perror("Error al asignar memoria para commandList");
+        return NULL;
     }
 
-    // Comprueba si el primer argumento (Empieza en 0) el cual es el nombre del programa
-    // Esta en nuestro struct, si esta se ejecuta
-    for (int i = 0; i < lenCommand; i++)
-    {
-        if (strcmp(commands[i].name, args[0]) == 0)
-        {
-            // args + 1 devuelve el puntero a la siguiente posicion de memoria
-            //  es decir, pasamos el array pero sin el primer elemento
-            // TODO: Eliminar correctamente el primer argumento recibido
-            commands[i].commandPtr(argc, args);
-            return 0;
+    // Iterar sobre el array de comandos y copiar los nombres
+    for (size_t i = 0; i < *count; i++) {
+        commandList[i] = strdup(commands[i].name); // Copiar el nombre del comando
+        if (commandList[i] == NULL) {
+            perror("Error al duplicar el nombre del comando");
+            // Liberar memoria previamente asignada en caso de error
+            for (size_t j = 0; j < i; j++) {
+                free(commandList[j]);
+            }
+            free(commandList);
+            return NULL;
         }
-
     }
-    fprintf(stderr, "%s no es un comando valido! \n", args[0]);
-    return -2;
+
+    commandList[*count] = NULL; // Agregar terminador NULL al final del array
+    return commandList;
 }
+
 
 
