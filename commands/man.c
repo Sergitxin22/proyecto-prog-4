@@ -80,16 +80,15 @@ int cargar_comandos() {
     fgets(line, sizeof(line), file);
 
     while (fgets(line, sizeof(line), file)) {
-        char *id, *name, *summary, *synopsis, *description;
+        char *name, *summary, *synopsis, *description;
 
-        // Separar la línea en cinco partes: id, nombre resumen, sinopsis y descripción
-        id = strtok(line, ",");
-        name = strtok(NULL, ",");
+        // Separar la línea en cinco partes: nombre, resumen, sinopsis y descripción
+        name = strtok(line, ",");
         summary = strtok(NULL, ",");
         synopsis = strtok(NULL, ",");
         description = strtok(NULL, "\n");  // Hasta el fin de línea
 
-        if (id && name && summary && synopsis && description) {
+        if (name && summary && synopsis && description) {
             // Eliminar posibles espacios en blanco al inicio o final del nombre
             char* trimmed_description = description;
             while (*trimmed_description == ' ') trimmed_description++;
