@@ -137,10 +137,10 @@ User * getAllUsers(int *count) {
         //Asignamos el ID
         users[size].id = sqlite3_column_int(stmt, 0);
         //Asignamos el usuario y la contraseña.
-        const char *username = (const char*)sqlite3_column_text(stmt, 1);
-        const char *password = (const char*)sqlite3_column_text(stmt, 2); //
-		users[size].username = strdup(username); //Copia del username, para que no sean constantes
-        users[size].password = strdup(password); //Copia del password para que no sean constantes
+        const char *username = (const char*)sqlite3_column_text(stmt,1);
+        const char *password = (const char*)sqlite3_column_text(stmt,2); //
+		users[size].username = strdup(username); //Copia del username, para que no sean constantes (es solo lectura)
+        users[size].password = strdup(password); //Copia del password para que no sean constantes (es solo lectura)
 		//Asignamos si es admin o no.
         users[size].isAdmin = sqlite3_column_int(stmt, 3);
         size++;
@@ -163,6 +163,4 @@ void freeUsers(User *users,int count) {
         free(users[i].password);
     }
     free(users);
-
-
 }

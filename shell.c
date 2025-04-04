@@ -5,6 +5,16 @@
 #include "headers/commands.h"
 #include "headers/shell.h"
 
+#include <time.h>
+
+//Incializamos la variable global. Por defecto NO será admin.
+int current_user_type = 1;
+int isAdmin()
+{
+    //Si es 1, devuelve true, porque 1 es el tipo admin.
+    return current_user_type == 1;
+}
+
 // Gets a line of input from the user
 int prompt(char** line) {
     *line = malloc(MAX_PROMPT_LEN * sizeof(char));
@@ -116,7 +126,8 @@ const Command commands[] = {
     {"cat", &cat_cmd},
     {"cd", &cd_cmd},
     {"admin",&admin_cmd},
-    {"listdir", &listdir_cmd}
+    {"listdir", &listdir_cmd},
+    {"clear",&clear_cmd}
 };
 
 // Tamaño del Array de comandos
@@ -138,20 +149,41 @@ int exec(int argc, char **args)
         return 0;
     }
 
+    //Loggear
+    FILE *f = fopen("logs.txt","a");
+    //Sacar la hora
+    time_t t;
+    //Puntero a estructura tm definida en time.h
+    struct tm *tm_info;
+
+    time(&t);
+    tm_info = localtime(&t);
+    // Format and print date and time
+    char buffer[26];
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_info);
+
+
+    fprintf(f," %s | USUARIO : ANONIMO HA EJECUTADO EL COMANDO %s \n ", buffer,args[0]);
+    fclose(f);
     // Comprueba si el primer argumento (Empieza en 0) el cual es el nombre del programa
     // Esta en nuestro struct, si esta se ejecuta
+
     for (int i = 0; i < lenCommand; i++)
     {
-        if (strcmp(commands[i].name, args[0]) == 0)
+
+        if (strcmp(commands[i].name,args[0]) == 0)
         {
             // args + 1 devuelve el puntero a la siguiente posicion de memoria
             //  es decir, pasamos el array pero sin el primer elemento
             // TODO: Eliminar correctamente el primer argumento recibido
             commands[i].commandPtr(argc, args);
             return 0;
+
+
+            }
+
         }
 
-    }
     fprintf(stderr, "%s no es un comando valido! \n", args[0]);
     return -2;
 }
