@@ -129,7 +129,7 @@ const Command commands[] = {
     {"admin", &admin_cmd},
     {"man", &man_cmd},
     {"login", &login_cmd},
-    {"printcommands", &printcommands_cmd}
+    {"printcommands", &printcommands_cmd},
     {"clear",&clear_cmd}
 };
 
