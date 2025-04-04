@@ -5,3 +5,6 @@ id,name,summary,synopsis,description
 1,listdir,Lista un directorio,listdir <directorio>,Imprime en pantalla los elementos de un directorio.
 1,printdir,Imprime el path del directorio de trabajo,printdir [OPCION],Imprime el directorio absoluto del directorio de tabajo (working directory).
 1,writeline,Escribe una linea en un fichero,writeline [OPCION] <dir. fichero> <texto>,Escribe la linea proporcionada como argumento en el fichero también proporcionado como argumento.
+1,print,Imprime los argumentos proporcionados,print [OPCION] <argumento>...,Recibe unos argumentos y los imprime en pantalla.
+1,printcommands,Imprime la lista de comandos disponibles,printcommands,Obtiene el Array de los comandos disponibles y los imprime en pantalla.
+1,login,Inicia sesion en la shell,login <usuario> <contraseña>,Recibe los datos del usuario e inicia sesion si el usuario existe en la base de datos.
