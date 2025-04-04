@@ -119,7 +119,7 @@ const Command commands[] = {
     {"listdir", &listdir_cmd}
 };
 
-// Tamaño del Array de comandos
+    {"printcommands", &printcommands_cmd}
 const int lenCommand = sizeof(commands) / sizeof(Command);
 
 /**
