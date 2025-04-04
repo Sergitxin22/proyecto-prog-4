@@ -7,7 +7,7 @@
 
 int prompt(char** line);
 char** splitArgs(char *input_line, int *arg_count);
-
+char** getcommands(size_t* outSize);
 int exec(int argc, char **args);
 /**
 * Estructura COMMAND que contiene el nombre del Comando y un puntero a la funcion
