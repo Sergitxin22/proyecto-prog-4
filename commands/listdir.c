@@ -2,6 +2,14 @@
 #include <dirent.h>
 #include <stdlib.h>
 
+/**
+ * @brief Lista un directorio
+ * listdir <directorio> 
+ *
+ * @param argc Cantidad de argumentos recibidos
+ * @param args Array de argumentos recibidos
+ * @return int 0 si la ejecución fue exitosa
+ */
 int listdir_cmd(int argc, char **args) {
     struct dirent *dir;
     char *directory = ".";

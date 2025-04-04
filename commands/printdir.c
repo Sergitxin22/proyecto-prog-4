@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 /**
- * @brief Imprime el directorio actual
+ * @brief Imprime el path del directorio actual (working directory)
  * printdir [OPCIÓN]
  * 
  * Si recibe el argumento -n, imprime solo el directorio,

@@ -1,7 +1,4 @@
 charkey,description,cmd_name
 n,show short version information,ver
-l,hace otra cosa,vera
-i,soy sergio,vera
-a,markel es un crack,ver
-a,dani es un crack2,vera
-a,julen es un crack,ver
+n,Imprime el directorio sin aditivos,printdir
+a,La linea del argumento se añadirá en una linea nueva del fichero,writeline
