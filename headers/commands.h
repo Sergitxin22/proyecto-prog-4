@@ -12,4 +12,5 @@ int cd_cmd(int argc, char **args);
 int admin_cmd(int argc, char **args);
 int listdir_cmd(int argc, char **args);
 int printcommands_cmd(int argc, char **args);
+int login_cmd(int argc, char** args);
 #endif
