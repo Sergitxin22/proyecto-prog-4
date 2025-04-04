@@ -1,5 +1,6 @@
 #include "../headers/commands.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 void test_ver() {
     // Versión larga
@@ -91,6 +92,19 @@ void test_listdir() {
     
     free(args);
     free(args2);
+}
+
+void test_printcommands() {
+    printf("\n--- Running test_printcommands ---\n");
+    char *arg = "printcommands";
+    char **args = malloc(sizeof(char *) * 1);
+    args[0] = arg;
+
+    // Run the function
+    printcommands_cmd(1, args);
+
+    free(args);
+    printf("--- End of test_printcommands ---\n\n");
 }
 
 int main(int argc, char const *argv[]) {
