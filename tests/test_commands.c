@@ -107,6 +107,27 @@ void test_printcommands() {
     printf("--- End of test_printcommands ---\n\n");
 }
 
+void test_print() {
+    printf("\n--- Running test_print ---\n");
+    // Caso 1: print Hello World
+    char *args1[] = {"print", "Hello", "World"};
+    print_cmd(3, args1);
+
+    // Caso 2: print -n NoNewline
+    char *args2[] = {"print", "-n", "NoNewline"};
+    print_cmd(3, args2);
+
+    // Caso 3: print -l Line1 Line2
+    char *args3[] = {"print", "-l", "Line1", "Line2"};
+    print_cmd(4, args3);
+
+    // Caso 4: print (sin argumentos)
+    char *args4[] = {"print"};
+    print_cmd(1, args4);
+    printf("--- End of test_print ---\n\n");
+}
+
+
 int main(int argc, char const *argv[]) {
     test_ver();
     test_printdir();
