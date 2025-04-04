@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 void test_ver() {
+    printf("\n--- Running test_ver ---\n");
     // Versión larga
     char *arg = "ver";
     char **args = malloc(sizeof(char *) * 1);
@@ -18,9 +19,11 @@ void test_ver() {
 
     free(args);
     free(args2);
+    printf("--- End of test_ver ---\n\n");
 }
 
 void test_printdir() {
+    printf("\n--- Running test_printdir ---\n");
     // Versión larga
     char **args = malloc(sizeof(char *));
     printdir_cmd(1, args);
@@ -35,9 +38,11 @@ void test_printdir() {
 
     free(args);
     free(args2);
+    printf("--- End of test_printdir ---\n\n");
 }
 
 void test_cd() {
+    printf("\n--- Running test_cd ---\n");
     char **args = malloc(sizeof(char *));
     char *arg = "cd";
     char *arg2 = "..";
@@ -48,9 +53,11 @@ void test_cd() {
     // anterior al de la ejecución del test
     printdir_cmd(1, args);
     free(args);
+    printf("--- End of test_cd ---\n\n");
 }
 
 void test_writeline() {
+    printf("\n--- Running test_writeline ---\n");
     // Creará un fichero .txt en el directorio
     // de ejecución del test
     char **args = malloc(sizeof(char *) * 3);
@@ -75,9 +82,11 @@ void test_writeline() {
 
     free(args);
     free(args2);
+    printf("--- End of test_writeline ---\n\n");
 }
 
 void test_listdir() {
+    printf("\n--- Running test_listdir ---\n");
     char **args = malloc(sizeof(char *) * 1);
     char *arg = "listdir";
     args[0] = arg;
@@ -92,6 +101,7 @@ void test_listdir() {
     
     free(args);
     free(args2);
+    printf("--- End of test_listdir ---\n\n");
 }
 
 void test_printcommands() {
