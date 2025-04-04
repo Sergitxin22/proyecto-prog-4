@@ -53,6 +53,7 @@ int checkLogs(char * filePath) {
   while (fgets(str, 100, file) != NULL) {
     fprintf(stdout, "%s", str);
   }
+  fclose(file);
 
 }
 
@@ -112,7 +113,7 @@ int admin_cmd(int argc, char **args) {
   while(sfResult != 1){
     //Limpiar buffer, ya que lo que nos introducen se queda en el input buffer.
     while(getchar() != '\n');
-    printf("Selecciona una opcion valida!Solo numeros :");
+    printf("Selecciona una opcion valida! Solo numeros :");
     sfResult = scanf("%d", &opcion);
   }
 
@@ -151,7 +152,14 @@ int admin_cmd(int argc, char **args) {
     // Mostrar el menú nuevamente y solicitar una opción
     showMenu();
     printf("Selecciona una opcion: ");
-    scanf("%d", & opcion);
+    sfResult = scanf("%d",&opcion);
+     while(sfResult != 1){
+    //Limpiar buffer, ya que lo que nos introducen se queda en el input buffer.
+    while(getchar() != '\n');
+    printf("Selecciona una opcion valida! Solo numeros :");
+    sfResult = scanf("%d", &opcion);
+  }
+
     
   }
 
