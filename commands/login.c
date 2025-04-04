@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include "../headers/commands.h"
 
-// Prototipo de man_cmd
-int man_cmd(int argc, char **args);
 
 /**
  * @brief Solicita el nombre de usuario y la contraseña en la shell
@@ -25,21 +23,4 @@ int login_cmd(int argc, char** args) {
     printf("Password: ");
     scanf("%s", password);
 
-    // Comprobar si usuario y contraseña son correctos
-    if (strcmp(username, "admin") == 0 && strcmp(password, "1234") == 0) {
-        printf("Login successful. Welcome, %s!\n", username);
-        
-        // Solicitar el comando para el manual
-        printf("Enter the command to view its manual: ");
-        scanf("%s", command);
-        
-        // Llamar a man_cmd con el comando ingresado
-        char *args[] = { "man", command, NULL };
-        man_cmd(2, args);
-        
-        return 0; // Éxito
-    } else {
-        printf("Error: Incorrect username or password.\n");
-        return 1; // Falla
-    }
 }
