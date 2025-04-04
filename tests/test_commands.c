@@ -134,5 +134,7 @@ int main(int argc, char const *argv[]) {
     test_cd();
     test_writeline();
     test_listdir();
+    test_printcommands();
+    test_print();
     return 0;
 }
