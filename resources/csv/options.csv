@@ -1,0 +1,6 @@
+charkey,description,cmd_name
+n,show short version information,ver
+n,Imprime el directorio sin aditivos,printdir
+a,La linea del argumento se añadirá en una linea nueva del fichero,writeline
+n,Imprime sin salto de línea final,print
+l,Imprime cada argumento en una nueva línea,print
