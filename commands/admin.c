@@ -140,6 +140,7 @@ int admin_cmd(int argc, char **args) {
     // Opción 5: Salir del programa
     else if (opcion == 5) {
       printf("Saliendo del panel de administracion...\n");
+      while (getchar() != '\n'); // Limpiar el buffer
       break;
     }
     // Caso por defecto: opción inválida
@@ -151,6 +152,7 @@ int admin_cmd(int argc, char **args) {
     showMenu();
     printf("Selecciona una opcion: ");
     scanf("%d", & opcion);
+    
   }
 
 printf("\n");

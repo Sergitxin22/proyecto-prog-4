@@ -121,14 +121,54 @@ const Command commands[] = {
     {"ver", &ver_cmd},
     {"print", &print_cmd},
     {"writeline", &writeline_cmd},
-    {"man", &man_cmd},
     {"printdir", &printdir_cmd},
     {"cat", &cat_cmd},
     {"cd", &cd_cmd},
     {"admin",&admin_cmd},
     {"listdir", &listdir_cmd},
+    {"admin", &admin_cmd},
+    {"man", &man_cmd},
+    {"login", &login_cmd},
+    {"printcommands", &printcommands_cmd}
     {"clear",&clear_cmd}
 };
+
+
+/**
+ * @brief Itera sobre el array de comandos y devuelve un array dinámico con los nombres de los comandos.
+ * 
+ * @return char** Array dinámico con los nombres de los comandos (NULL-terminated).
+ *         El usuario es responsable de liberar la memoria del array y de cada string.
+ */
+char** getcommands(size_t* count) {
+    // Calcular el número de comandos
+    *count = sizeof(commands) / sizeof(commands[0]);
+
+    // Reservar memoria para el array de strings
+    char** commandList = malloc((*count + 1) * sizeof(char*)); // +1 para el terminador NULL
+    if (commandList == NULL) {
+        perror("Error al asignar memoria para commandList");
+        return NULL;
+    }
+
+    // Iterar sobre el array de comandos y copiar los nombres
+    for (size_t i = 0; i < *count; i++) {
+        commandList[i] = strdup(commands[i].name); // Copiar el nombre del comando
+        if (commandList[i] == NULL) {
+            perror("Error al duplicar el nombre del comando");
+            // Liberar memoria previamente asignada en caso de error
+            for (size_t j = 0; j < i; j++) {
+                free(commandList[j]);
+            }
+            free(commandList);
+            return NULL;
+        }
+    }
+
+    commandList[*count] = NULL; // Agregar terminador NULL al final del array
+    return commandList;
+}
+
 
 // Tamaño del Array de comandos
 const int lenCommand = sizeof(commands) / sizeof(Command);
