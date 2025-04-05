@@ -26,8 +26,10 @@ When first executing the shell, if the database is not created, the user functio
 The configuration file (`conf.h`) allows the modification of certain configuration variables. In the current version, you can modify the database path with `DB_PATH` and the log file path with `LOG_PATH` 
 
 ## Documentation
-You can exit the shell by executing `exit`.
-
+You can exit the shell by executing:
+```
+shell > exit
+```
 To see every available command in the shell, you can execute the `printcommands` command:
 ```
 shell > printcommands
