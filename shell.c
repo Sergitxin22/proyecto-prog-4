@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "headers/commands.h"
 #include "headers/shell.h"
 
@@ -23,7 +24,7 @@ int prompt(char** line) {
         return -1;
     }
     
-    printf("\033[0;34m"); // Establece el color de la terminal a azul
+    printf("\033[0;34m"); // Establece el color de texto de la terminal a azul
     printf("shell > ");
     printf("\033[0m"); // Resetea el color al por defecto
 
@@ -130,7 +131,8 @@ const Command commands[] = {
     {"man", &man_cmd},
     {"login", &login_cmd},
     {"printcommands", &printcommands_cmd},
-    {"clear",&clear_cmd}
+    {"clear",&clear_cmd},
+    {"printuser", &printuser_cmd}
 };
 
 
