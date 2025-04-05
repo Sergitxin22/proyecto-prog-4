@@ -153,6 +153,56 @@ User * getAllUsers(int *count) {
 }
 
 /**
+ * Verifica si la contraseña de un usuario es correcta o no
+ */
+int verify_password(char *username, char *password) {
+    sqlite3 *db = openDatabase();
+
+    const char *sql = "SELECT COUNT(*) FROM USER WHERE NAME = ? AND PASSWORD = ?";
+    sqlite3_stmt *stmt;
+    int count = 0;
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "Error en la consulta SQL: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+    }
+
+    sqlite3_bind_text(stmt, 1, username, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, password, -1, SQLITE_STATIC);
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        count = sqlite3_column_int(stmt, 0);
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return count > 0;  // Si la contraseña del usuario es verificada, devuelve 1 (TRUE) si no 0 (FALSE)
+
+}
+
+int is_user_admin(char *username) {
+    sqlite3 *db = openDatabase();
+    const char *sql = "SELECT IS_ADMIN FROM USER WHERE NAME = ?";
+    sqlite3_stmt *stmt;
+    int count = 0;
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "Error en la consulta SQL: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+    }
+
+    sqlite3_bind_text(stmt, 1, username, -1, SQLITE_STATIC);
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        count = sqlite3_column_int(stmt, 0);
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return count == 1;  // Si el usuario es admin, devuelve 1 (true)
+}
+
+/**
  * Funcion para liberar la memoria de los usuarios.
  Strdup asigna memoria dinamica en el heap asi que hay que liberarlo.
  */
