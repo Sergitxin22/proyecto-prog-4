@@ -2,9 +2,19 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "headers/db.h"
+#include "headers/commands.h"
 #include <unistd.h>
 
 int main(int argc, char const *argv[]) {
+
+    if ( argc == 2 && strcmp(argv[1],"-b") == 0)
+    {
+        initDatabase();
+        cargar_csvs();
+    }
+
+
     for (;;)
     {
         char *line = NULL; // Received input line
