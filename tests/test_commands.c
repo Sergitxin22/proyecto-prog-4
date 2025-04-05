@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "../headers/db.h"
 void test_ver() {
     printf("\n--- Running test_ver ---\n");
     // Versión larga
@@ -104,6 +105,22 @@ void test_listdir() {
     printf("--- End of test_listdir ---\n\n");
 }
 
+void test_mkdir(){
+
+    printf("\n--- Running test_mkdir ---\n");
+    char *args1[] = {"mkdir","carpeta1"};
+    char *args2[] = {"mkdir","carpeta2","carpeta3"};
+    char *args3[] = {"mkdir","carpeta2/carpeta3"};
+
+    //Primer test: Una carpeta unicamente
+    mkdir_cmd(2,args1);
+
+    //Segundo test : Dos carpetas
+    mkdir_cmd(3,args3);
+    //Tercer test : Carpeta dentro de otra.
+    mkdir_cmd(2,args3);
+}
+
 void test_printcommands() {
     printf("\n--- Running test_printcommands ---\n");
     char *arg = "printcommands";
@@ -168,5 +185,6 @@ int main(int argc, char const *argv[]) {
     test_printcommands();
     test_print();
     test_login();
+    test_mkdir();
     return 0;
 }

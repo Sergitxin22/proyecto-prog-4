@@ -9,3 +9,4 @@ print,Imprime los argumentos proporcionados,print [OPCION] <argumento>...,Recibe
 printcommands,Imprime la lista de comandos disponibles,printcommands,Obtiene el Array de los comandos disponibles y los imprime en pantalla.
 login,Inicia sesion en la shell,login <usuario> <contraseña>,Recibe los datos del usuario e inicia sesion si el usuario existe en la base de datos.
 mkdir, Crea directorios, mkdir <directorio>, Introduce la ruta del directorio que quieras crear. SOLO DISPONIBLE EN SISTEMAS LINUX.
+admin,Menu de administracion,admin,Menu de administracion para ver, crear y borrar usuarios además de poder ver los logs.

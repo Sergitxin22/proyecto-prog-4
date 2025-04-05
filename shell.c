@@ -183,7 +183,6 @@ const int lenCommand = sizeof(commands) / sizeof(Command);
  */
 int exec(int argc, char **args)
 {
-
     // Si el primer argumento (nombre del programa) es nulo, lanzamos error
     if (args[0] == NULL)
     {
@@ -203,8 +202,14 @@ int exec(int argc, char **args)
     char buffer[26];
     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_info);
 
+    if (strcmp(CURRENT_USER.username,"NULL") == 0 ){
+        fprintf(f,"%s | USUARIO ANONIMO HA EJECUTADO EL COMANDO %s \n", buffer);
+}
+    else
+    {
+        fprintf(f,"%s | USUARIO : %s HA EJECUTADO EL COMANDO %s \n", buffer, CURRENT_USER.username, args[0]);
 
-    fprintf(f,"%s | USUARIO : %s HA EJECUTADO EL COMANDO %s \n", buffer, CURRENT_USER.username, args[0]);
+    }
     fclose(f);
     // Comprueba si el primer argumento (Empieza en 0) el cual es el nombre del programa
     // Esta en nuestro struct, si esta se ejecuta

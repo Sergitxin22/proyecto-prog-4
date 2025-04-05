@@ -52,9 +52,15 @@ void addUsers() {
   fgets(username, sizeof(username), stdin);
   username[strcspn(username, "\n")] = 0;
 
+  if(strlen(username) == 0) {
+   	fprintf(stderr,"No puedes introducir un nombre vacio \n");
+    return;
+  }
+
   printf("Enter password: ");
   fgets(password, sizeof(password), stdin);
   password[strcspn(password, "\n")] = 0;
+
 
   printf("Deberia ser el usuario ADMIN? (1 = Si, 0 = No): ");
   while (1) {
@@ -84,7 +90,7 @@ int admin_cmd(int argc, char **args) {
   }
 
   if (argc > 1) {
-    perror("Este comando no recibe argumentos!");
+    perror("Este comando no recibe argumentos! \n");
     return -1;
   }
 
