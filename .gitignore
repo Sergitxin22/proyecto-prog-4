@@ -3,4 +3,5 @@ main
 *.db
 .vscode/
 .idea/
-.out
+logs.txt
+*.out
