@@ -139,7 +139,6 @@ User * getAllUsers(int *count) {
         //Asignamos el ID
         //Asignamos el usuario y la contraseña.
         const char *username = (const char*)sqlite3_column_text(stmt,0);
-        const char *password = (const char*)sqlite3_column_text(stmt,1);
 		strcpy(users[size].username, username);
 		//Asignamos si es admin o no.
         users[size].user_type = sqlite3_column_int(stmt, 2);
@@ -204,6 +203,146 @@ int is_user_admin(char *username) {
 }
 
 /**
- * Funcion para liberar la memoria de los usuarios.
- Strdup asigna memoria dinamica en el heap asi que hay que liberarlo.
- */
+* Funcion que crea la base de datos con datos de prueba.
+La funcion sera llamada del main si se pasa como opcion 1, que indicara
+que se quiere crear la base de datos de 0 vs solo insertar
+*/
+int initDatabase(){
+sqlite3 *db = openDatabase();
+sqlite3_stmt *stmt;
+const char *sql;
+
+const char *drop_user_table = "DROP TABLE IF EXISTS USER;";
+const char *drop_cmd_table = "DROP TABLE IF EXISTS CMD;";
+const char *drop_option_table = "DROP TABLE IF EXISTS OPTION;";
+
+if (sqlite3_prepare_v2(db, drop_user_table, -1, &stmt, NULL) != SQLITE_OK) {
+    fprintf(stderr, "Error deleting USER table: %s\n", sqlite3_errmsg(db));
+    sqlite3_close(db);
+    return -1;
+}
+
+if (sqlite3_step(stmt) != SQLITE_DONE) {
+    fprintf(stderr, "Error executing USER table DROP: %s\n", sqlite3_errmsg(db));
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return -1;
+}
+
+if (sqlite3_prepare_v2(db, drop_cmd_table, -1, &stmt, NULL) != SQLITE_OK) {
+    fprintf(stderr, "Error deleting CMD table: %s\n", sqlite3_errmsg(db));
+    sqlite3_close(db);
+    return -1;
+}
+
+if (sqlite3_step(stmt) != SQLITE_DONE) {
+    fprintf(stderr, "Error executing CMD table DROP: %s\n", sqlite3_errmsg(db));
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return -1;
+}
+
+if (sqlite3_prepare_v2(db, drop_option_table, -1, &stmt, NULL) != SQLITE_OK) {
+    fprintf(stderr, "Error deleting OPTION table: %s\n", sqlite3_errmsg(db));
+    sqlite3_close(db);
+    return -1;
+}
+
+if (sqlite3_step(stmt) != SQLITE_DONE) {
+    fprintf(stderr, "Error executing OPTION table DROP: %s\n", sqlite3_errmsg(db));
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return -1;
+}
+
+
+
+const char *create_user_table =
+    "CREATE TABLE IF NOT EXISTS USER("
+    "    ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+    "    NAME TEXT UNIQUE,"
+    "    PASSWORD TEXT,"
+    "    IS_ADMIN INTEGER"
+    ");";
+
+const char *create_cmd_table =
+    "CREATE TABLE IF NOT EXISTS CMD("
+    "    NAME TEXT PRIMARY KEY NOT NULL,"
+    "    SUMMARY TEXT,"
+    "    SYNOPSIS TEXT,"
+    "    DESC TEXT"
+    ");";
+
+const char *create_option_table =
+    "CREATE TABLE IF NOT EXISTS OPTION ("
+    "    KEY CHAR(1) NOT NULL,"
+    "    DESC TEXT,"
+    "    CMD_NAME TEXT NOT NULL,"
+    "    PRIMARY KEY (KEY, CMD_NAME),"
+    "    FOREIGN KEY (CMD_NAME) REFERENCES CMD(NAME) ON DELETE CASCADE"
+    ");";
+
+const char *insert_users =
+    "INSERT INTO USER(NAME, PASSWORD, IS_ADMIN) VALUES "
+    "('alice', 'password123', 1), "
+    "('bob', 'password123', 0);";
+
+
+// Create USER table
+if (sqlite3_prepare_v2(db, create_user_table, -1, &stmt, NULL) != SQLITE_OK) {
+    fprintf(stderr, "Error in creating USER table: %s\n", sqlite3_errmsg(db));
+    sqlite3_close(db);
+    return -1;
+}
+
+if (sqlite3_step(stmt) != SQLITE_DONE) {
+    fprintf(stderr, "Error executing USER table creation: %s\n", sqlite3_errmsg(db));
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return -1;
+}
+sqlite3_finalize(stmt);
+
+// Crear tabla CMD
+if (sqlite3_prepare_v2(db, create_cmd_table, -1, &stmt, NULL) != SQLITE_OK) {
+    fprintf(stderr, "Error  creating CMD table: %s\n", sqlite3_errmsg(db));
+    sqlite3_close(db);
+    return -1;
+}
+
+if (sqlite3_step(stmt) != SQLITE_DONE) {
+    fprintf(stderr, "Error executing CMD table creation: %s\n", sqlite3_errmsg(db));
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return -1;
+}
+sqlite3_finalize(stmt);
+
+//Crear tabla OPTION
+if (sqlite3_prepare_v2(db, create_option_table, -1, &stmt, NULL) != SQLITE_OK) {
+    fprintf(stderr, "Error in creating OPTION table: %s\n", sqlite3_errmsg(db));
+}
+
+if(sqlite3_step(stmt) != SQLITE_DONE) {
+    fprintf(stderr, "Error executing CMD table creation: %s\n", sqlite3_errmsg(db));
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return -1;
+}
+
+
+
+//Insertar usuarios de prueba
+if (sqlite3_prepare_v2(db, insert_users, -1, &stmt, NULL) != SQLITE_OK) {
+    fprintf(stderr, "Error inserting default USERS: %s\n", sqlite3_errmsg(db));
+}
+
+if(sqlite3_step(stmt) != SQLITE_DONE) {
+    fprintf(stderr, "Error executing INSERT users default users: %s\n", sqlite3_errmsg(db));
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return -1;
+}
+sqlite3_close(db);
+return 0;
+}
