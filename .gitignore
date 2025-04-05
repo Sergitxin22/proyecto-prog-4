@@ -5,3 +5,4 @@ main
 .idea/
 logs.txt
 *.out
+.obj/
