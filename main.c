@@ -8,12 +8,11 @@
 
 int main(int argc, char const *argv[]) {
 
-    if ( argc == 2 && strcmp(argv[1],"-b") == 0)
-    {
+    if ( argc == 2 && strcmp(argv[1], "--create-database") == 0) {
+        printf("Initialiting database...\n");
         initDatabase();
         cargar_csvs();
     }
-
 
     for (;;)
     {

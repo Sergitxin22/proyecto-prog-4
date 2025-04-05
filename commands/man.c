@@ -196,11 +196,6 @@ int print_params(char* name) {
         printf("El comando: %s no tiene params\n", name);
     }
     
-    // Verificar si ocurrió algún error durante la consulta
-    if (rc != SQLITE_DONE) {
-        fprintf(stderr, "Error al ejecutar la consulta: %s\n", sqlite3_errmsg(db));
-    }
-    
     // Finalizar la consulta y cerrar la base de datos
     sqlite3_finalize(stmt);
     sqlite3_close(db);
@@ -255,11 +250,6 @@ int print_command(char* name) {
         printf("El comando: %s no existe\n", name);
     }
     
-    // Verificar si ocurrió algún error durante la consulta
-    if (rc != SQLITE_DONE) {
-        fprintf(stderr, "Error al ejecutar la consulta: %s\n", sqlite3_errmsg(db));
-    }
-    
     // Finalizar la consulta y cerrar la base de fdatos
     sqlite3_finalize(stmt);
     sqlite3_close(db);
@@ -281,6 +271,5 @@ int print_command(char* name) {
 int man_cmd(int arc, char **args) {
     char* name = args[1];
     print_command(name);
-    // cargar_csvs();
     return 0;
 }
