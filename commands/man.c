@@ -3,19 +3,14 @@
 #include <string.h>
 #include "../headers/commands.h"
 #include "../lib/sqlite3/sqlite3.h"
+#include "../headers/db.h"
 
 #define MAX_LINE 2048  // Asegurar espacio suficiente para la descripción
 
 int guardar_comando(char *name, char *summary, char *synopsis, char *desc){
     sqlite3 *db;
     sqlite3_stmt *stmt;
-    int db_found = sqlite3_open("./db/local.db", &db);
-    
-    if (db_found != SQLITE_OK) {
-        printf("Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
-        sqlite3_close(db);
-        return 1;
-    }
+    db = openDatabase();
 
     char *insert_sql = "INSERT INTO CMD(NAME, SUMMARY, SYNOPSIS, DESC) VALUES (?, ?, ?, ?)";
     sqlite3_prepare_v2(db, insert_sql, strlen(insert_sql) + 1, &stmt, NULL);
@@ -40,13 +35,8 @@ int guardar_comando(char *name, char *summary, char *synopsis, char *desc){
 int guardar_option(char *charkey, char *description, char *cmd_name){
     sqlite3 *db;
     sqlite3_stmt *stmt;
-    int db_found = sqlite3_open("./db/local.db", &db);
+    db  = openDatabase();
     
-    if (db_found != SQLITE_OK) {
-        printf("Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
-        sqlite3_close(db);
-        return 1;
-    }
 
     char *insert_sql = "INSERT INTO OPTION(KEY, DESC, CMD_NAME) VALUES (?, ?, ?)";
     sqlite3_prepare_v2(db, insert_sql, strlen(insert_sql) + 1, &stmt, NULL);
@@ -111,7 +101,7 @@ int cargar_comandos() {
 }
 
 int cargar_opciones() {
-    FILE *file = fopen("./resources/csv/params.csv", "r");
+    FILE *file = fopen("./resources/csv/options.csv", "r");
     if (!file) {
         perror("Error al abrir el archivo");
         return 1;
@@ -170,12 +160,7 @@ int print_params(char* name) {
     int rc;
     
     // Abrir la base de datos
-    rc = sqlite3_open("./db/local.db", &db);
-    if (rc != SQLITE_OK) {
-        fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
-        sqlite3_close(db);
-        return rc;
-    }
+    db = openDatabase();
     
     // Preparar la consulta SQL
     char *sql = "SELECT key, desc FROM option WHERE CMD_NAME = ?";
@@ -229,15 +214,9 @@ int print_command(char* name) {
     int rc;
     
     // Abrir la base de datos
-    rc = sqlite3_open("./db/local.db", &db);
-    if (rc != SQLITE_OK) {
-        fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
-        sqlite3_close(db);
-        return rc;
-    }
-    
+     db = openDatabase();
     // Preparar la consulta SQL
-    char *sql = "SELECT name, summary, synopsis, desc FROM cmd WHERE NAME = ?";
+    char *sql = "SELECT name, summary, synopsis, desc FROM CMD WHERE NAME = ?";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error al preparar la consulta: %s\n", sqlite3_errmsg(db));
@@ -281,7 +260,7 @@ int print_command(char* name) {
         fprintf(stderr, "Error al ejecutar la consulta: %s\n", sqlite3_errmsg(db));
     }
     
-    // Finalizar la consulta y cerrar la base de datos
+    // Finalizar la consulta y cerrar la base de fdatos
     sqlite3_finalize(stmt);
     sqlite3_close(db);
     
