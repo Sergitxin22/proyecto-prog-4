@@ -1,6 +1,6 @@
 name,summary,synopsis,description
-ver,display shell version information,ver [OPTION]...,Display the version of the shell.
-vera,prueba otro comando,vera [OPTIONES]...,prueba otro comando.
+exit,Salir del shell,exit,Permite al usuario terminar el programa y salir de la shell.
+ver,Version de la shell,ver [OPTION]...,Imprime en pantalla la versión de la shell.
 cd,Cambio de directorio,cd <directorio>,Cambia el directorio de tabajo (working directory) al PATH proporcionado como argumento.
 listdir,Lista un directorio,listdir <directorio>,Imprime en pantalla los elementos de un directorio.
 printdir,Imprime el path del directorio de trabajo,printdir [OPCION],Imprime el directorio absoluto del directorio de tabajo (working directory).
@@ -8,5 +8,9 @@ writeline,Escribe una linea en un fichero,writeline [OPCION] <dir. fichero> <tex
 print,Imprime los argumentos proporcionados,print [OPCION] <argumento>...,Recibe unos argumentos y los imprime en pantalla.
 printcommands,Imprime la lista de comandos disponibles,printcommands,Obtiene el Array de los comandos disponibles y los imprime en pantalla.
 login,Inicia sesion en la shell,login <usuario> <contraseña>,Recibe los datos del usuario e inicia sesion si el usuario existe en la base de datos.
-mkdir, Crea directorios, mkdir <directorio>, Introduce la ruta del directorio que quieras crear. SOLO DISPONIBLE EN SISTEMAS LINUX.
-admin,Menu de administracion,admin,Menu de administracion para ver, crear y borrar usuarios además de poder ver los logs.
+mkdir,Crea directorios, mkdir <directorio>, Introduce la ruta del directorio que quieras crear. SOLO DISPONIBLE EN SISTEMAS LINUX.
+admin,Menu de administracion,admin,Menu de administracion para ver crear y borrar usuarios además de poder ver los logs.
+cat,Lee un fichero,cat <fichero>,Imprime en pantalla el contenido del fichero especificado en el argumento.
+clear,Limpia la terminal,clear,Elimina el texto impreso en la terminal.
+man,Documentacion de la shell,man <comando>,Muestra información de utilidad del comando especificado como argumento.
+printuser,Imprimir el usuario,printuser,Imprime en pantalla el nombre de usuario y su tipo.
