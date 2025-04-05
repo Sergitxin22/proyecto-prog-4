@@ -6,15 +6,13 @@
 #include "headers/commands.h"
 #include "headers/shell.h"
 
-#include <time.h>
-
 //Incializamos la variable global. Por defecto NO será admin.
-int current_user_type = 1;
-int isAdmin()
-{
-    //Si es 1, devuelve true, porque 1 es el tipo admin.
-    return current_user_type == 1;
-}
+User CURRENT_USER = {.username = "NULL", .user_type = 1};
+
+/**
+ * Devuelve 1 (true) si el usuario actual es administrador/a
+ */
+int isAdmin() { return CURRENT_USER.user_type == 1; }
 
 // Gets a line of input from the user
 int prompt(char** line) {
