@@ -137,6 +137,27 @@ void test_print() {
     printf("--- End of test_print ---\n\n");
 }
 
+void test_login() {
+    printf("\n--- Running test_login ---\n");
+
+     // Definimos el nombre de usuario de prueba
+     const char *username = "alice";
+
+     // Definimos la contraseña correspondiente para ese usuario
+     const char *password = "password123"; 
+ 
+     // Verificamos si el usuario existe y si la contraseña es correcta
+     if (userExists(username) && verify_password(username, password)) {
+         // Si ambos son válidos, mensaje de éxito
+         printf("Login successful for user '%s'\n", username);
+     } else {
+         // Si falla alguno, mensaje de error
+         printf("Login failed for user '%s'\n", username);
+     }
+
+    printf("--- End of test_login ---\n\n");
+}
+
 
 int main(int argc, char const *argv[]) {
     test_ver();
