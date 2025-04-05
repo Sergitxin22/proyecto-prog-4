@@ -5,6 +5,7 @@
 #include <time.h>
 #include "headers/commands.h"
 #include "headers/shell.h"
+#include "conf.h"
 
 //Incializamos la variable global. Por defecto NO será admin.
 User CURRENT_USER = {.username = "NULL", .user_type = 1};
@@ -190,7 +191,7 @@ int exec(int argc, char **args)
     }
 
     //Loggear
-    FILE *f = fopen("logs.txt","a");
+    FILE *f = fopen(LOG_PATH, "a");
     //Sacar la hora
     time_t t;
     //Puntero a estructura tm definida en time.h

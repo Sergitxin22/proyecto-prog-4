@@ -1,5 +1,6 @@
 #include "../lib/sqlite3/sqlite3.h"
 #include "../headers/db.h"
+#include "../conf.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -11,7 +12,7 @@
  */
 sqlite3* openDatabase() {
     sqlite3 *db = NULL;
-    int conn = sqlite3_open("db/database.db", &db);
+    int conn = sqlite3_open(DB_PATH, &db);
     if (conn != SQLITE_OK) {
         fprintf(stderr, "Error al abrir la base de datos: %s\n", sqlite3_errmsg(db));
         exit(1);
