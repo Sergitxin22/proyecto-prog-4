@@ -157,10 +157,3 @@ User * getAllUsers(int *count) {
  * Funcion para liberar la memoria de los usuarios.
  Strdup asigna memoria dinamica en el heap asi que hay que liberarlo.
  */
-void freeUsers(User *users,int count) {
-        for (int i = 0; i < count; ++i) {
-        free(users[i].username);
-        free(users[i].password);
-    }
-    free(users);
-}

@@ -20,8 +20,9 @@ void showUsers() {
   for (int i = 0; i < count; i++) {
     printf("%d) %s \n", i + 1, users[i].username);
   }
+  printf("\n");
   //Lo liberamos
-  freeUsers(users, count);
+  free(users);
 
 }
 

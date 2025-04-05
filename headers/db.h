@@ -15,7 +15,6 @@ typedef struct {
 
 sqlite3 *openDatabase(char* dbPath);
 User* getAllUsers(int  *count);
-void freeUsers(User* users,int count);
 void insertUsers(char username[], char password[], int isAdmin);
 int userExists(sqlite3 *db, char *username);
 void deleteUserDB(char *username);
