@@ -229,6 +229,8 @@ if (sqlite3_step(stmt) != SQLITE_DONE) {
     return -1;
 }
 
+sqlite3_finalize(stmt);
+
 if (sqlite3_prepare_v2(db, drop_cmd_table, -1, &stmt, NULL) != SQLITE_OK) {
     fprintf(stderr, "Error deleting CMD table: %s\n", sqlite3_errmsg(db));
     sqlite3_close(db);
@@ -241,6 +243,8 @@ if (sqlite3_step(stmt) != SQLITE_DONE) {
     sqlite3_close(db);
     return -1;
 }
+
+sqlite3_finalize(stmt);
 
 if (sqlite3_prepare_v2(db, drop_option_table, -1, &stmt, NULL) != SQLITE_OK) {
     fprintf(stderr, "Error deleting OPTION table: %s\n", sqlite3_errmsg(db));
@@ -255,7 +259,7 @@ if (sqlite3_step(stmt) != SQLITE_DONE) {
     return -1;
 }
 
-
+sqlite3_finalize(stmt);
 
 const char *create_user_table =
     "CREATE TABLE IF NOT EXISTS USER("
@@ -330,7 +334,7 @@ if(sqlite3_step(stmt) != SQLITE_DONE) {
     return -1;
 }
 
-
+sqlite3_finalize(stmt);
 
 //Insertar usuarios de prueba
 if (sqlite3_prepare_v2(db, insert_users, -1, &stmt, NULL) != SQLITE_OK) {
@@ -343,6 +347,8 @@ if(sqlite3_step(stmt) != SQLITE_DONE) {
     sqlite3_close(db);
     return -1;
 }
+
+sqlite3_finalize(stmt);
 sqlite3_close(db);
 return 0;
 }
