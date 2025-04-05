@@ -50,7 +50,7 @@ int checkLogs(char * filePath) {
   }
 
   char str[2048]; //Buffer
-  printf("Mostrando LOGS");
+  printf("Mostrando LOGS\n");
   while (fgets(str, 100, file) != NULL) {
     fprintf(stdout, "%s", str);
   }
@@ -85,7 +85,6 @@ void showMenu() {
   printf("3) Borrar usuario \n");
   printf("4) Ver logs \n");
   printf("5) Salir del panel de administracion \n");
-
 }
 
 int admin_cmd(int argc, char **args) {
@@ -99,8 +98,6 @@ int admin_cmd(int argc, char **args) {
   }
 
   int opcion = 0;
-
-
 
   if(argc > 1){
     perror("Este comando no recibe argumentos!");
@@ -117,10 +114,6 @@ int admin_cmd(int argc, char **args) {
     printf("Selecciona una opcion valida! Solo numeros :");
     sfResult = scanf("%d", &opcion);
   }
-
-
-
-
   // Bucle principal del menú
   while (1) {
     // Opción 1: Mostrar usuarios
