@@ -167,5 +167,6 @@ int main(int argc, char const *argv[]) {
     test_listdir();
     test_printcommands();
     test_print();
+    test_login();
     return 0;
 }
