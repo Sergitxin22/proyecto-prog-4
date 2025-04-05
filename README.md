@@ -16,11 +16,26 @@ This shell provides the most fundamental commands a shell requires to perform si
 The shell features a a local, single-file sqlite3 database to efficiently store command documentation and user data. To do so, it uses the [libsqlite3](https://github.com/LuaDist/libsqlite3) sqlite3 driver, owned by [The Lua Language Distribution](https://luadist.org/).
 
 ## Build
+### Download
+To download the shell, you can clone this repository with git:
+```
+git clone https://github.com/Sergitxin22/proyecto-prog-4
+```
+This will clone the necessary files into the directory you executed the command on.
+
 ### Compilation
-In order to compile the project, you can execute the command `make` in the root directory of the repository. The Makefile will generate an executable binary called `shell.out`, which can be executed normally. If any issues arise, you can compile the shell by executing the first commented line in `Makefile`, which will compile the source files manually with `gcc`.
+In order to compile the project, you can run the `Makefile`, `cd`ing into the root directory of the repository:
+```
+make
+```
+The Makefile will generate an executable binary called `shell.out`, which can be executed normally. If any issues arise, you can compile the shell by executing the first commented line in `Makefile`, which will compile the source files manually with `gcc`.
 
 ### Database initialization
-When first executing the shell, if the database is not created, the user functionalities and documentation will not be avaliable. To create the database automatically, you can run `./shell.out --create-database`, which will create the tables, insert the command documentation and generate two users for testing. "alice", an admin, and "bob", not an admin. The password for both users is "password123". After initializing the database, the shell is ready to be executed normally. Executing the mentioned command again after creation will result in a datababase reset.
+When first executing the shell, if the database is not created, the user functionalities and documentation will not be avaliable. To create the database automatically, you can run:
+```
+./shell.out --create-database
+```
+This command will create the tables, insert the command documentation and generate two users for testing. "alice", an admin, and "bob", not an admin. The password for both users is "password123". After initializing the database, the shell is ready to be executed normally. Executing the mentioned command again after creation will result in a datababase reset.
 
 ### Configuration file
 The configuration file (`conf.h`) allows the modification of certain configuration variables. In the current version, you can modify the database path with `DB_PATH` and the log file path with `LOG_PATH` 
