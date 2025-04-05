@@ -204,7 +204,7 @@ int exec(int argc, char **args)
     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_info);
 
 
-    fprintf(f," %s | USUARIO : ANONIMO HA EJECUTADO EL COMANDO %s \n ", buffer,args[0]);
+    fprintf(f,"%s | USUARIO : %s HA EJECUTADO EL COMANDO %s \n", buffer, CURRENT_USER.username, args[0]);
     fclose(f);
     // Comprueba si el primer argumento (Empieza en 0) el cual es el nombre del programa
     // Esta en nuestro struct, si esta se ejecuta
