@@ -12,6 +12,10 @@ int main(int argc, char const *argv[]) {
 
         // Gets a line of input from the user
         int prompt_status = prompt(&line);
+        if (prompt_status != 0) {
+            return -1;
+        }
+
         if (strcmp("exit", line) == 0)
         {
             printf("exiting shell\n");
