@@ -1,5 +1,7 @@
 # shell
 A C-programmed, database-driven simple shell.
+
+
 This shell provides the most fundamental commands a shell requires to perform simple tasks in an operative system. It also features a database system to efficiently store shell data.
 
 ## Core functionalities
