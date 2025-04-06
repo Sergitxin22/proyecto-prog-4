@@ -2,8 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-
-#include "../headers/exec.h"
 #include "../shell.c"
 
 void testPrintArgs(char *string, int *arg_count) {
@@ -49,7 +47,7 @@ void execTest() {
     //Deberia dar fallo
     int count = 0;
     char **comandoPtr = splitArgs("mkdir paco2 paco3", &count);
-    exec(comandoPtr);
+    exec(comandoPtr, 3);
 }
 
 
