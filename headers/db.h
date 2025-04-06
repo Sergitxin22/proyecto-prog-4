@@ -15,6 +15,8 @@ int userExists(char *username);
 void deleteUserDB(char *username);
 int is_user_admin(char *username);
 int verify_password(char *username, char *password);
+void insert_log(char* desc, char* username, char* date);
+int get_user_id(char* username);
 
 #endif //DB_H
 

@@ -49,7 +49,8 @@ void deleteUserDB(char *username){
   sqlite3_finalize(stmt);
   sqlite3_close(db);
 
-  }
+}
+
 int userExists(char *username) {
     sqlite3* db = openDatabase();
     const char *sql = "SELECT COUNT(*) FROM USER WHERE NAME = ?;";
@@ -70,6 +71,7 @@ int userExists(char *username) {
     sqlite3_close(db);
     return count > 0;  // Si el usuario existe, devuelve 1 (TRUE) si no 0 (FALSE)
 }
+
 void insertUsers(char username[], char password[], int isAdmin){
     const char *sql = "INSERT INTO USER (NAME, password, IS_ADMIN) VALUES (?, ?, ?);";
   	sqlite3* db = openDatabase();
@@ -351,4 +353,50 @@ if(sqlite3_step(stmt) != SQLITE_DONE) {
 sqlite3_finalize(stmt);
 sqlite3_close(db);
 return 0;
+}
+
+void insert_log(char* desc, char* username, char* date){
+    const char *sql = "INSERT INTO LOG (DESC, USER_ID, DATE) VALUES (?, ?, ?);";
+  	sqlite3* db = openDatabase();
+    sqlite3_stmt* stmt;
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+    fprintf(stderr, "Error con la sentencia SQL : %s\n", sqlite3_errmsg(db));
+    sqlite3_close(db);
+    return;
+    }
+
+    //Asignamos a cada ? el valor que queramos
+    sqlite3_bind_text(stmt, 1, desc, -1, SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 2, get_user_id(username));
+    sqlite3_bind_text(stmt, 3, date, -1, SQLITE_STATIC);
+     if (sqlite3_step(stmt) != SQLITE_DONE) {
+        fprintf(stderr, "Insert error: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+}
+
+int get_user_id(char *username) {
+    sqlite3* db = openDatabase();
+    const char *sql = "SELECT ID FROM USER WHERE NAME = ?;";
+    sqlite3_stmt *stmt;
+    int id = 0;
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "Error en la consulta SQL: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return -1;
+    }
+
+    sqlite3_bind_text(stmt, 1, username, -1, SQLITE_STATIC);
+
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        id = sqlite3_column_int(stmt, 0);
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    return id;  // Si el usuario existe, devuelve 1 (TRUE) si no 0 (FALSE)
 }

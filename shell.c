@@ -6,6 +6,7 @@
 #include "headers/commands.h"
 #include "headers/shell.h"
 #include "conf.h"
+#include "headers/db.h"
 
 //Incializamos la variable global. Por defecto NO será admin.
 User CURRENT_USER = {.username = "NULL", .user_type = 1};
@@ -203,11 +204,12 @@ int exec(int argc, char **args)
 
     if (strcmp(CURRENT_USER.username,"NULL") == 0 ){
         fprintf(f,"%s | USUARIO ANONIMO HA EJECUTADO EL COMANDO %s \n", buffer);
-}
+        
+    }
     else
     {
         fprintf(f,"%s | USUARIO : %s HA EJECUTADO EL COMANDO %s \n", buffer, CURRENT_USER.username, args[0]);
-
+        insert_log(args[0], CURRENT_USER.username, buffer);
     }
     fclose(f);
     // Comprueba si el primer argumento (Empieza en 0) el cual es el nombre del programa
@@ -223,8 +225,6 @@ int exec(int argc, char **args)
             // TODO: Eliminar correctamente el primer argumento recibido
             commands[i].commandPtr(argc, args);
             return 0;
-
-
             }
 
         }
