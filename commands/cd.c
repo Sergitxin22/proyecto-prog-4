@@ -1,6 +1,14 @@
 #include "../headers/commands.h"
 #include <stdio.h>
 #include <unistd.h>
+#include <signal.h>
+#include <stdlib.h>
+
+// Funcion que se ejecuta cuando signal() (abajo) detecta un segmentation fault
+void handler(int signal) {
+    fprintf(stderr, "cd: segmentation fault detected. This is likely because you tried to access a directory where the process holds no permission to\nSignal code: %d\n", signal);
+    exit(1);
+}
 
 /**
  * @brief Cambia el directorio de trabajo (working directory) al
@@ -12,6 +20,7 @@
  * @return int 0 si la ejecución fue exitosa
  */
 int cd_cmd(int argc, char** args) {
+    signal(SIGSEGV, handler);
     if (argc != 2) {
         fprintf(stderr, "cd: incorrect number of arguments\n");
         return -2;
