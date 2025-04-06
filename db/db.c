@@ -44,7 +44,7 @@ void deleteUserDB(char *username){
    if (sqlite3_step(stmt) != SQLITE_DONE) {
         fprintf(stderr, "Error al borrar usuario: %s\n", sqlite3_errmsg(db));
     } else {
-        printf("Usuario %s eliminado ! \n",username);
+        printf("User %s has been deleted ! \n",username);
     }
   sqlite3_finalize(stmt);
   sqlite3_close(db);
@@ -75,7 +75,7 @@ void insertUsers(char username[], char password[], int isAdmin){
   	sqlite3* db = openDatabase();
 
     if (userExists(username)) {
-        printf("Error. EL usuario ya existe .\n");
+        printf("Error. The user already exists .\n");
         sqlite3_close(db);
         return;
     }
@@ -83,7 +83,7 @@ void insertUsers(char username[], char password[], int isAdmin){
     sqlite3_stmt* stmt;
 
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
-    fprintf(stderr, "Error con la sentencia SQL : %s\n", sqlite3_errmsg(db));
+    fprintf(stderr, "Error with SQL query : %s\n", sqlite3_errmsg(db));
     sqlite3_close(db);
     return;
     }
@@ -92,9 +92,9 @@ void insertUsers(char username[], char password[], int isAdmin){
     sqlite3_bind_text(stmt, 2, password, -1, SQLITE_STATIC);
     sqlite3_bind_int(stmt, 3, isAdmin);
      if (sqlite3_step(stmt) != SQLITE_DONE) {
-        fprintf(stderr, "Error al insertar usuario: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Error inserting user: %s\n", sqlite3_errmsg(db));
     } else {
-        printf("Usuario %s creado ! \n",username);
+        printf("User %s created ! \n",username);
     }
 
     sqlite3_finalize(stmt);

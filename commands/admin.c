@@ -113,6 +113,7 @@ int admin_cmd(int argc, char **args) {
       addUsers();
     } else if (opcion == 3) {
       deleteUser();
+      printf("\n");
     } else if (opcion == 4) {
       checkLogs("logs.txt");
     } else if (opcion == 5) {
