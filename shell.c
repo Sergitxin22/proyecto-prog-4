@@ -203,12 +203,12 @@ int exec(int argc, char **args)
     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_info);
 
     if (strcmp(CURRENT_USER.username,"NULL") == 0 ){
-        fprintf(f,"%s | USUARIO ANONIMO HA EJECUTADO EL COMANDO %s \n", buffer);
+        fprintf(f,"%s | USUARIO ANONIMO HA EJECUTADO EL COMANDO %s \n", buffer,args[0]);
         
     }
     else
     {
-        fprintf(f,"%s | USUARIO : %s HA EJECUTADO EL COMANDO %s \n", buffer, CURRENT_USER.username, args[0]);
+        fprintf(f,"%s | USUARIO : %s HA EJECUTADO EL COMANDO %s \n", buffer, CURRENT_USER.username,args[0]);
         insert_log(args[0], CURRENT_USER.username, buffer);
     }
     fclose(f);
