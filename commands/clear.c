@@ -4,7 +4,7 @@
 int clear_cmd(int argc, char **args){
 
   if(argc > 1){
-    fprintf(stderr,"Este comando no acepta argumentos adicionales \n");
+    fprintf(stderr,"clear: incorrect number of arguments\n");
     return 1;
   }
 

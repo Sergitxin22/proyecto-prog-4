@@ -18,7 +18,7 @@ int printcommands_cmd(int argc, char **args) {
     char** cmdList = getcommands(&count);
     
     if (cmdList == NULL) {
-        fprintf(stderr, "printcommands: Could not obtain command list\n");
+        fprintf(stderr, "printcommands: could not obtain command list\n");
         return -1;
     }
 

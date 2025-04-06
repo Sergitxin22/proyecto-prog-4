@@ -3,28 +3,28 @@
 #include <string.h>
 #include "../headers/shell.h"
 
-int print_file(char* localizacion) {
-    FILE *file = fopen(localizacion, "r");
+int print_file(char* path) {
+    FILE *file = fopen(path, "r");
     if (!file) {
-        printf("%s", localizacion);
-        perror("Error al abrir el archivo");
+        printf("%s", path);
+        perror("cat: error opening file");
         return 1;
     }
 
     char line[2048];
-    char* linea;
+    char* print_line;
 
     while (fgets(line, sizeof(line), file)) {
-        linea = malloc(strlen(line) + 1);  // +1 to accommodate the null terminator
-        if (linea == NULL) {
-            perror("Error al asignar memoria");
+        print_line = malloc(strlen(line) + 1);  // +1 para el caracter nulo
+        if (print_line == NULL) {
+            perror("cat: memory allocation error");
             fclose(file);
             return 1;
         }
 
-        strcpy(linea, line);  // Copy the contents of 'line' into 'linea'
-        printf("%s", linea);
-        free(linea);
+        strcpy(print_line, line);
+        printf("%s", print_line);
+        free(print_line);
     }
 
     fclose(file);

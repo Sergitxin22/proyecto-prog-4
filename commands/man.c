@@ -60,7 +60,7 @@ int guardar_option(char *charkey, char *description, char *cmd_name){
 int cargar_comandos() {
     FILE *file = fopen("./resources/csv/commands.csv", "r");
     if (!file) {
-        perror("Error al abrir el archivo");
+        perror("error: could not open commands.csv");
         return 1;
     }
 
@@ -92,7 +92,7 @@ int cargar_comandos() {
 
             guardar_comando(name, summary, synopsis, trimmed_description);
         } else {
-            fprintf(stderr, "Error al leer línea: %s\n", line);
+            fprintf(stderr, "error reading line: %s\n", line);
         }
     }
 
@@ -103,7 +103,7 @@ int cargar_comandos() {
 int cargar_opciones() {
     FILE *file = fopen("./resources/csv/options.csv", "r");
     if (!file) {
-        perror("Error al abrir el archivo");
+        perror("error: could not open options.csv");
         return 1;
     }
 
@@ -140,7 +140,7 @@ int cargar_opciones() {
             guardar_option(charkey, description, trimmed_name);
         } 
         else {
-            fprintf(stderr, "Error al procesar línea de parámetros\n");
+            fprintf(stderr, "error: could not process param line\n");
         }
     }
 
@@ -166,7 +166,7 @@ int print_params(char* name) {
     char *sql = "SELECT key, desc FROM option WHERE CMD_NAME = ?";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
-        fprintf(stderr, "Error al preparar la consulta: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Error in query setup: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
         return rc;
     }
@@ -174,7 +174,7 @@ int print_params(char* name) {
     // Vincular el parámetro de la consulta (nombre de comando) al marcador de posición `?`
     rc = sqlite3_bind_text(stmt, 1, name, -1, SQLITE_STATIC);  // 1 es el índice del primer `?`
     if (rc != SQLITE_OK) {
-        fprintf(stderr, "Error al vincular el parámetro: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Error in parameter linking: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         sqlite3_close(db);
         return rc;
@@ -193,7 +193,7 @@ int print_params(char* name) {
 
     if (entradas == 0)
     {
-        printf("El comando: %s no tiene params\n", name);
+        printf("Command %s does not have params\n", name);
     }
     
     // Finalizar la consulta y cerrar la base de datos
@@ -214,7 +214,7 @@ int print_command(char* name) {
     char *sql = "SELECT name, summary, synopsis, desc FROM CMD WHERE NAME = ?";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
-        fprintf(stderr, "Error al preparar la consulta: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Error in query setup: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
         return rc;
     }
@@ -222,7 +222,7 @@ int print_command(char* name) {
     // Vincular el parámetro de la consulta (nombre de comando) al marcador de posición `?`
     rc = sqlite3_bind_text(stmt, 1, name, -1, SQLITE_STATIC);  // 1 es el índice del primer `?`
     if (rc != SQLITE_OK) {
-        fprintf(stderr, "Error al vincular el parámetro: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Error in parameter linking: %s\n", sqlite3_errmsg(db));
         sqlite3_finalize(stmt);
         sqlite3_close(db);
         return rc;
@@ -241,13 +241,13 @@ int print_command(char* name) {
         printf("========================================\n");
         printf("Manual de %s\n", name);
         printf("========================================\n");
-        printf("NAME\n\t%s - %s\n\n", name, summary);
-        printf("SYNOPSIS\n\t%s\n\n", synopsis);
-        printf("DESCRIPTION\n\t%s\n\n", description);
+        printf("NOMBRE\n\t%s - %s\n\n", name, summary);
+        printf("SINOPSIS\n\t%s\n\n", synopsis);
+        printf("DESCRIPCION\n\t%s\n\n", description);
         print_params(name);
     } else {
 
-        printf("El comando: %s no existe\n", name);
+        printf("man: command %s does not exist\n", name);
     }
     
     // Finalizar la consulta y cerrar la base de fdatos

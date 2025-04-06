@@ -9,7 +9,7 @@ void showUsers() {
   int count = 0;
   User * users = getAllUsers(&count);
   printf("----------------------------------------- \n");
-  printf("Usuarios totales en el sistema: %d \n", count);
+  printf("Total users in the system: %d \n", count);
   for (int i = 0; i < count; i++) {
     printf("%d) %s \n", i + 1, users[i].username);
   }
@@ -20,7 +20,7 @@ void showUsers() {
 void deleteUser() {
   char userABorrar[30];
   showUsers();
-  printf("Escribe el nombre del usuario que quieres borrar!: ");
+  printf("Introduce the user to be deleted: ");
   fgets(userABorrar, sizeof(userABorrar), stdin);
   userABorrar[strcspn(userABorrar, "\n")] = 0;
   deleteUserDB(userABorrar);
@@ -29,12 +29,12 @@ void deleteUser() {
 int checkLogs(char * filePath) {
   FILE * file = fopen(filePath, "r");
   if (file == NULL) {
-    fprintf(stdout, "Error al abrir el archivo %s \n", filePath);
+    fprintf(stdout, "Log file could not be opened: %s \n", filePath);
     return -1;
   }
 
   char str[2048];
-  printf("Mostrando LOGS\n");
+  printf("Opening LOGS\n");
   while (fgets(str, 100, file) != NULL) {
     fprintf(stdout, "%s", str);
   }
@@ -53,7 +53,7 @@ void addUsers() {
   username[strcspn(username, "\n")] = 0;
 
   if(strlen(username) == 0) {
-   	fprintf(stderr,"No puedes introducir un nombre vacio \n");
+   	fprintf(stderr,"You cannot use an empty name\n");
     return;
   }
 
@@ -62,13 +62,13 @@ void addUsers() {
   password[strcspn(password, "\n")] = 0;
 
 
-  printf("Deberia ser el usuario ADMIN? (1 = Si, 0 = No): ");
+  printf("Should the user have admin privileges? (1 = Yes, 0 = No): ");
   while (1) {
     fgets(input, sizeof(input), stdin);
     if (sscanf(input, "%d", &isAdmin) == 1 && (isAdmin == 0 || isAdmin == 1)) {
       break;
     }
-    printf("Entrada invalida! Los valores posibles son 0 o 1: ");
+    printf("Invalid input. Possible values are '1' or '0': ");
   }
 
   insertUsers(username, password, isAdmin);
@@ -76,21 +76,21 @@ void addUsers() {
 
 void showMenu() {
   printf("-------MENU------\n");
-  printf("1) Mostrar usuarios \n");
-  printf("2) Crear usuario \n");
-  printf("3) Borrar usuario \n");
-  printf("4) Ver logs \n");
-  printf("5) Salir del panel de administracion \n");
+  printf("1) Show users\n");
+  printf("2) Create user\n");
+  printf("3) Delete user\n");
+  printf("4) Open logs\n");
+  printf("5) Exit admin menu\n");
 }
 
 int admin_cmd(int argc, char **args) {
   if (!isAdmin()) {
-    fprintf(stderr, "admin no es un comando valido! \n");
+    fprintf(stderr, "admin is not a valid command\n");
     return -1;
   }
 
   if (argc > 1) {
-    perror("Este comando no recibe argumentos! \n");
+    perror("admin: incorrect number of arguments\n");
     return -1;
   }
 
@@ -99,11 +99,11 @@ int admin_cmd(int argc, char **args) {
 
   while (1) {
     showMenu();
-    printf("Selecciona una opcion: ");
+    printf("Select an option: ");
     fgets(input, sizeof(input), stdin);
 
     if (sscanf(input, "%d", &opcion) != 1) {
-      printf("Selecciona una opcion valida! Solo numeros :\n");
+      printf("Invalid input. Only numbers between 1-5 are allowed:\n");
       continue;
     }
 
@@ -116,10 +116,10 @@ int admin_cmd(int argc, char **args) {
     } else if (opcion == 4) {
       checkLogs("logs.txt");
     } else if (opcion == 5) {
-      printf("Saliendo del panel de administracion...\n");
+      printf("Exiting admin menu\n");
       break;
     } else {
-      printf("Opcion invalida. Por favor, intenta de nuevo.\n");
+      printf("Invalid option. Please, try again.\n");
     }
   }
 

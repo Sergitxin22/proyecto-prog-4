@@ -18,27 +18,27 @@
 
 int print_cmd(int argc, char **args)
 {
-    int salto_linea = 1; // Por defecto, imprimimos con salto de línea
-    int linea_por_linea = 0; // Por defecto, no imprimimos cada argumento en una nueva línea
-    int indice_inicio = 1; // Índice donde empiezan los argumentos a imprimir
+    int line_jump = 1; // Por defecto, imprimimos con salto de línea
+    int line_per_line = 0; // Por defecto, no imprimimos cada argumento en una nueva línea
+    int init_index = 1; // Índice donde empiezan los argumentos a imprimir
 
     if (argc > 1)
     {  
         if (strcmp(args[1], "-n") == 0)
         {
-            salto_linea = 0; // Si el primer argumento es "-n", no imprimimos salto de línea
-            indice_inicio = 2; // Los argumentos a imprimir comienzan después de "-n"
+            line_jump = 0; // Si el primer argumento es "-n", no imprimimos salto de línea
+            init_index = 2; // Los argumentos a imprimir comienzan después de "-n"
         }
         else if (strcmp(args[1], "-l") == 0)
         {
-            linea_por_linea = 1; // Si el primer argumento es "-l", imprimimos cada argumento en una nueva línea
-            indice_inicio = 2; // Los argumentos a imprimir comienzan después de "-l"
+            line_per_line = 1; // Si el primer argumento es "-l", imprimimos cada argumento en una nueva línea
+            init_index = 2; // Los argumentos a imprimir comienzan después de "-l"
         }
     }
 
-    for (int i = indice_inicio; i < argc; i++)
+    for (int i = init_index; i < argc; i++)
     {
-        if (linea_por_linea)
+        if (line_per_line)
         {
             printf("%s\n", args[i]); // Imprime el argumento seguido de un salto de línea
         }
@@ -52,7 +52,7 @@ int print_cmd(int argc, char **args)
         }
     }
 
-    if (linea_por_linea != 1) 
+    if (line_per_line != 1) 
     {
         printf("\n");
     }
