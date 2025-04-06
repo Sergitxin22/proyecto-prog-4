@@ -19,12 +19,9 @@ int mkdir_cmd(int argc ,char** args) {
   int index = 1;
   //Iterar por todos los argumentos para conseguir los nombres de las carpetas
   while(args[index] != NULL){
-    printf("%s \n", args[index]);
+    printf("Directory %s created\n", args[index]);
     mkdir(args[index],0755);
     index++;
     }
-
-
-
   return 0;
  }
