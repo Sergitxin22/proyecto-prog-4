@@ -7,7 +7,7 @@
 * Implementacion del comando mkdir
 
 */
-int mkdir_cmd(int argc ,char** args) {
+int mkdir_cmd(int argc , const char** args) {
 
 
   //Comprobar argumentos

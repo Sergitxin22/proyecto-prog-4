@@ -16,14 +16,14 @@
 int writeline_cmd(int argc, char **args) {
     if (argc > 2) {
         char* mode = NULL;
-        char* file_path = "";
-        char* text = "";
+        const char* file_path = "";
+        const char* text = "";
         int append = !strcmp(args[1], "-a"); // Devuelve 1 ("true") si hay opción -a
        
         if (append) {
            mode = "a";
            file_path = args[2];
-           text = malloc(sizeof(char) * (strlen(args[3]) + 2));
+           text = (char*)malloc(sizeof(char) * (strlen(args[3]) + 2));
            strcpy(text, "\n");
            strcat(text, args[3]);
         } else {

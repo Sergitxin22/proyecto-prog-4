@@ -12,7 +12,7 @@
  */
 int listdir_cmd(int argc, char **args) {
     struct dirent *dir;
-    char *directory = ".";
+    const char *directory = ".";
     if (argc > 1) {
         // Si hay más de un argumento, se lista el directorio proporcionado
         directory = args[1];

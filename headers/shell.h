@@ -27,7 +27,7 @@ que ejecuta el comando.
 Los argumentos del comando (args) son las opciones que le pasa el usuario, NULL si ninguna opcion.
 */
 typedef struct Command {
-    char *name;
+    const char *name;
     int (*commandPtr)(int argc, char **args);
 } Command;
 

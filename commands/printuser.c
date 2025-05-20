@@ -13,7 +13,7 @@ int printuser_cmd(int argc, char **args) {
 
     // TODO: argumentos para especificar la impresión de datos
     int user_type = CURRENT_USER.user_type;
-    char *user_type_name;
+    const char *user_type_name;
     if (user_type) {
         user_type_name = "Admin";
     } else {

@@ -15,7 +15,6 @@
  * @return int 0 si la ejecución fue exitosa
  */
 
-
 int print_cmd(int argc, char **args)
 {
     int line_jump = 1; // Por defecto, imprimimos con salto de línea

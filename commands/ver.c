@@ -16,7 +16,7 @@
 int ver_cmd(int argc, char **args)
 {
     int show_short_version = 0;
-    char *message = "";
+    const char *message = "";
 
     if (argc > 1)
     {

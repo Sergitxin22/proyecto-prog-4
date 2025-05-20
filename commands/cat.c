@@ -15,7 +15,7 @@ int print_file(char* path) {
     char* print_line;
 
     while (fgets(line, sizeof(line), file)) {
-        print_line = malloc(strlen(line) + 1);  // +1 para el caracter nulo
+        print_line = (char*)malloc(strlen(line) + 1);  // +1 para el caracter nulo
         if (print_line == NULL) {
             perror("cat: memory allocation error");
             fclose(file);

@@ -30,7 +30,7 @@ void deleteUserDB(char *username){
 	return;
   }
 
-  char *sql = "DELETE FROM USER WHERE NAME = ?";
+  const char *sql = "DELETE FROM USER WHERE NAME = ?";
   sqlite3_stmt *stmt;
   //Comprobar que la consulta SQL esta BIEN.
   if(sqlite3_prepare_v2(db,sql,-1,&stmt, NULL) != SQLITE_OK){
@@ -111,7 +111,7 @@ User * getAllUsers(int *count) {
     sqlite3 *db = openDatabase();
 
     // Query
-    char *sql = "SELECT NAME, PASSWORD, IS_ADMIN FROM USER";
+    const char *sql = "SELECT NAME, PASSWORD, IS_ADMIN FROM USER";
     sqlite3_stmt *stmt;
     int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 
@@ -129,7 +129,7 @@ User * getAllUsers(int *count) {
 	//POR CADA FILA
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         //Crear un array dinamico de usuarios que vaya aumentando por cada usuario
-        users  = realloc(users, (size + 1) * sizeof(User));
+        users  = (User*)realloc(users, (size + 1) * sizeof(User));
         if (!users) {
             fprintf(stderr, "Error al asignar memoria dinamica! \n");
             free(users);

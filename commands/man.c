@@ -12,7 +12,7 @@ int guardar_comando(char *name, char *summary, char *synopsis, char *desc){
     sqlite3_stmt *stmt;
     db = openDatabase();
 
-    char *insert_sql = "INSERT INTO CMD(NAME, SUMMARY, SYNOPSIS, DESC) VALUES (?, ?, ?, ?)";
+    const char *insert_sql = "INSERT INTO CMD(NAME, SUMMARY, SYNOPSIS, DESC) VALUES (?, ?, ?, ?)";
     sqlite3_prepare_v2(db, insert_sql, strlen(insert_sql) + 1, &stmt, NULL);
     sqlite3_bind_text(stmt, 1, name, strlen(name), SQLITE_STATIC);
     sqlite3_bind_text(stmt, 2, summary, strlen(summary), SQLITE_STATIC);
@@ -38,7 +38,7 @@ int guardar_option(char *charkey, char *description, char *cmd_name){
     db  = openDatabase();
     
 
-    char *insert_sql = "INSERT INTO OPTION(KEY, DESC, CMD_NAME) VALUES (?, ?, ?)";
+    const char *insert_sql = "INSERT INTO OPTION(KEY, DESC, CMD_NAME) VALUES (?, ?, ?)";
     sqlite3_prepare_v2(db, insert_sql, strlen(insert_sql) + 1, &stmt, NULL);
     sqlite3_bind_text(stmt, 1, charkey, strlen(charkey), SQLITE_STATIC);
     sqlite3_bind_text(stmt, 2, description, strlen(description), SQLITE_STATIC);
@@ -163,7 +163,7 @@ int print_params(char* name) {
     db = openDatabase();
     
     // Preparar la consulta SQL
-    char *sql = "SELECT key, desc FROM option WHERE CMD_NAME = ?";
+    const char *sql = "SELECT key, desc FROM option WHERE CMD_NAME = ?";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error in query setup: %s\n", sqlite3_errmsg(db));
@@ -211,7 +211,7 @@ int print_command(char* name) {
     // Abrir la base de datos
      db = openDatabase();
     // Preparar la consulta SQL
-    char *sql = "SELECT name, summary, synopsis, desc FROM CMD WHERE NAME = ?";
+    const char *sql = "SELECT name, summary, synopsis, desc FROM CMD WHERE NAME = ?";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
         fprintf(stderr, "Error in query setup: %s\n", sqlite3_errmsg(db));

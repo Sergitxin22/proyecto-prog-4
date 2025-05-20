@@ -18,7 +18,7 @@ int isAdmin() { return CURRENT_USER.user_type == 1; }
 
 // Gets a line of input from the user
 int prompt(char** line) {
-    *line = malloc(MAX_PROMPT_LEN * sizeof(char));
+    *line = (char*) malloc(MAX_PROMPT_LEN * sizeof(char));
     if (*line == NULL) {
         fprintf(stdout, "malloc failed");
         return -1;
@@ -44,8 +44,8 @@ int prompt(char** line) {
 
 // Splits the input line into arguments. It also provides an argument count pointer
 char** splitArgs(char *input_line, int *arg_count) {
-    char** result = malloc(MAX_ARGS * sizeof(char*));
-    char* arg = malloc(MAX_ARG_LEN * sizeof(char));
+    char** result = (char**)malloc(MAX_ARGS * sizeof(char*));
+    char* arg = (char*)malloc(MAX_ARG_LEN * sizeof(char));
     int i = 0;        // Received input iterator
     int j = 0;        // Argument iterator (resets every split)
     int k = 0;        // Result array iterator
@@ -71,14 +71,14 @@ char** splitArgs(char *input_line, int *arg_count) {
             // j must also be > 0 because if it isn't, the argument is not needed
             arg[j] = '\0'; // Marks end of string
             j++;
-            result[k] = malloc(j * sizeof(char)); // Allocates just enough space for the argument
+            result[k] = (char*)malloc(j * sizeof(char)); // Allocates just enough space for the argument
             strcpy(result[k], arg); // The argument is copied
             free(arg);
             k++;
             // TODO: K igual no es necsario por argu_count
             (*arg_count)++;
             j = 0; // Reset the argument buffer
-            arg = malloc(MAX_ARG_LEN * sizeof(char));
+            arg = (char*)malloc(MAX_ARG_LEN * sizeof(char));
         }
         i++;
     }
@@ -100,7 +100,7 @@ char** splitArgs(char *input_line, int *arg_count) {
     if (j > 0) {
         arg[j] = '\0';
         j++;
-        result[k] = malloc(j * sizeof(char));
+        result[k] = (char*)malloc(j * sizeof(char));
         strcpy(result[k], arg);
         free(arg);
         (*arg_count)++;
@@ -146,7 +146,7 @@ char** getcommands(size_t* count) {
     *count = sizeof(commands) / sizeof(commands[0]);
 
     // Reservar memoria para el array de strings
-    char** commandList = malloc((*count + 1) * sizeof(char*)); // +1 para el terminador NULL
+    char** commandList = (char**)malloc((*count + 1) * sizeof(char*)); // +1 para el terminador NULL
     if (commandList == NULL) {
         perror("Error al asignar memoria para commandList");
         return NULL;

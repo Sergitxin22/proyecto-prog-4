@@ -16,7 +16,7 @@
  */
 int printdir_cmd(int argc, char **args) {
 
-    char *message = "Current working directory is: ";
+    const char *message = "Current working directory is: ";
 
     if (argc > 1) {
         for (int i = 1; i < argc; i++)

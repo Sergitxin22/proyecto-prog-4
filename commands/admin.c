@@ -26,7 +26,7 @@ void deleteUser() {
   deleteUserDB(userABorrar);
 }
 
-int checkLogs(char * filePath) {
+int checkLogs(const char * filePath) {
   FILE * file = fopen(filePath, "r");
   if (file == NULL) {
     fprintf(stdout, "Log file could not be opened: %s \n", filePath);
