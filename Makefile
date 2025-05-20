@@ -1,18 +1,21 @@
-# gcc main.c shell.c commands/*.c db/*.c lib/sqlite3/*.c -o shell.out
-# Variable que almacena el compilador
+# Variables para los compiladores
 CC = gcc
+CXX = g++
 
 # Almacena los directorios con códigos fuente
-SRC_DIRS = . ./commands ./lib/sqlite3 ./db
+SRC_DIRS = . ./commands ./db
+SQLITE_DIR = ./lib/sqlite3
 # Almacena la variable donde estarán los objetos generados
 OBJ_DIR = ./.obj
 
-# Almacena todos los ficheros fuente
-SOURCES = $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c))
+# Almacena todos los ficheros fuente (separados por tipo)
+C_SOURCES = $(wildcard $(SQLITE_DIR)/*.c)
+CXX_SOURCES = $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.cpp))
 
 # Genera los nombres de los objetos, manteniendo su path
-# Esto lo hace sustituyendo cada .c por .o
-OBJECTS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SOURCES))
+C_OBJECTS = $(patsubst %.c,$(OBJ_DIR)/%.o,$(C_SOURCES))
+CXX_OBJECTS = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(CXX_SOURCES))
+OBJECTS = $(C_OBJECTS) $(CXX_OBJECTS)
 
 # El nombre del ejecutable que se compilará
 EXEC = shell.out
@@ -20,19 +23,24 @@ EXEC = shell.out
 # Target de compilación
 all: $(EXEC)
 
-# Linkea los objetos para obtener el ejecutable
+# Linkea los objetos para obtener el ejecutable (usando g++ como linker)
 $(EXEC): $(OBJECTS)
-	$(CC) -o $@ $^
+	$(CXX) -o $@ $^
 
-# Crea los directorios para los objetos
-$(OBJ_DIR)/%.o: %.c
+# Regla para compilar archivos SQLite con gcc
+$(OBJ_DIR)/$(SQLITE_DIR)/%.o: $(SQLITE_DIR)/%.c
 	@mkdir -p $(@D)
 	$(CC) -c $< -o $@
 
-# El comando que se ejecuta all hacer un clean
-# En este caso, elimina los objetos y el ejectable
+# Regla para compilar el resto de archivos con g++
+$(OBJ_DIR)/%.o: %.cpp
+	@mkdir -p $(@D)
+	$(CXX) -c $< -o $@
+
+# El comando que se ejecuta al hacer un clean
+# En este caso, elimina los objetos y el ejecutable
 clean:
 	rm -rf $(OBJ_DIR) $(EXEC)
 
-# Evita ejecutar con make ficheros que se llamen clean o all (por si caso)
+# Evita ejecutar con make ficheros que se llamen clean o all
 .PHONY: all clean
