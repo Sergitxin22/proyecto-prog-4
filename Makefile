@@ -3,7 +3,7 @@ CC = gcc
 CXX = g++
 
 # Almacena los directorios con códigos fuente
-SRC_DIRS = . ./commands ./db
+SRC_DIRS = . ./commands ./db ./objects
 SQLITE_DIR = ./lib/sqlite3
 # Almacena la variable donde estarán los objetos generados
 OBJ_DIR = ./.obj
