@@ -220,7 +220,7 @@ int print_params(char *name)
 
     if (entradas == 0)
     {
-        printf("Command %s does not have params\n", name);
+        printf("Command %s does not have options\n", name);
     }
 
     // Finalizar la consulta y cerrar la base de datos
