@@ -6,34 +6,38 @@
 /**
  * @brief Función de comparación para `qsort`
  */
-int compare_strings(const void *a, const void *b) {
+int compare_strings(const void *a, const void *b)
+{
     return strcmp(*(const char **)a, *(const char **)b);
 }
 
 /**
  * @brief Imprime la lista de comandos disponibles usando getcommands, ordenados alfabéticamente.
  */
-int printcommands_cmd(int argc, char **args) {
+int printcommands_cmd(int argc, const char **args)
+{
     size_t count;
-    char** cmdList = getcommands(&count);
-    
-    if (cmdList == NULL) {
+    char **cmdList = getcommands(&count);
+
+    if (cmdList == NULL)
+    {
         fprintf(stderr, "printcommands: could not obtain command list\n");
         return -1;
     }
 
     // Ordenar los comandos alfabéticamente
-    qsort(cmdList, count, sizeof(char*), compare_strings);
+    qsort(cmdList, count, sizeof(char *), compare_strings);
 
     printf("\nAvailable commands (%zu):\n", count);
     printf("=======================\n");
-    
-    for (size_t i = 0; i < count; i++) {
-        printf("  • %s\n", cmdList[i]);  // Imprime cada comando con un punto
-        free(cmdList[i]);  // Liberar cada string
+
+    for (size_t i = 0; i < count; i++)
+    {
+        printf("  • %s\n", cmdList[i]); // Imprime cada comando con un punto
+        free(cmdList[i]);               // Liberar cada string
     }
-    
-    free(cmdList);  // Liberar el array
+
+    free(cmdList); // Liberar el array
     printf("=======================\n");
 
     return 0;

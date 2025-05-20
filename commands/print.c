@@ -4,7 +4,7 @@
 
 /**
  * @brief Imprime los argumentos proporcionados
- * 
+ *
  *
  * Si se proporciona la opción "-n", imprime sin salto de línea final.
  * Si se proporciona la opción "-l", imprime cada argumento en una nueva línea.
@@ -15,23 +15,23 @@
  * @return int 0 si la ejecución fue exitosa
  */
 
-int print_cmd(int argc, char **args)
+int print_cmd(int argc, const char **args)
 {
-    int line_jump = 1; // Por defecto, imprimimos con salto de línea
+    int line_jump = 1;     // Por defecto, imprimimos con salto de línea
     int line_per_line = 0; // Por defecto, no imprimimos cada argumento en una nueva línea
-    int init_index = 1; // Índice donde empiezan los argumentos a imprimir
+    int init_index = 1;    // Índice donde empiezan los argumentos a imprimir
 
     if (argc > 1)
-    {  
+    {
         if (strcmp(args[1], "-n") == 0)
         {
-            line_jump = 0; // Si el primer argumento es "-n", no imprimimos salto de línea
+            line_jump = 0;  // Si el primer argumento es "-n", no imprimimos salto de línea
             init_index = 2; // Los argumentos a imprimir comienzan después de "-n"
         }
         else if (strcmp(args[1], "-l") == 0)
         {
             line_per_line = 1; // Si el primer argumento es "-l", imprimimos cada argumento en una nueva línea
-            init_index = 2; // Los argumentos a imprimir comienzan después de "-l"
+            init_index = 2;    // Los argumentos a imprimir comienzan después de "-l"
         }
     }
 
@@ -51,7 +51,7 @@ int print_cmd(int argc, char **args)
         }
     }
 
-    if (line_per_line != 1) 
+    if (line_per_line != 1)
     {
         printf("\n");
     }

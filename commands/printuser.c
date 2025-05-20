@@ -9,14 +9,18 @@
  * @param args Arreglo de argumentos recibidos
  * @return int 0 si la ejecución fue exitosa
  */
-int printuser_cmd(int argc, char **args) {
+int printuser_cmd(int argc, const char **args)
+{
 
     // TODO: argumentos para especificar la impresión de datos
     int user_type = CURRENT_USER.user_type;
     const char *user_type_name;
-    if (user_type) {
+    if (user_type)
+    {
         user_type_name = "Admin";
-    } else {
+    }
+    else
+    {
         user_type_name = "User";
     }
     printf("Current user: %s\n", CURRENT_USER.username);

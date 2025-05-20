@@ -13,7 +13,7 @@
  * @param args Arreglo de argumentos recibidos
  * @return int 0 si la ejecución fue exitosa
  */
-int ver_cmd(int argc, char **args)
+int ver_cmd(int argc, const char **args)
 {
     int show_short_version = 0;
     const char *message = "";

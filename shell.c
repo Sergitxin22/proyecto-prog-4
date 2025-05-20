@@ -8,7 +8,7 @@
 #include "conf.h"
 #include "headers/db.h"
 
-//Incializamos la variable global. Por defecto NO será admin.
+// Incializamos la variable global. Por defecto NO será admin.
 User CURRENT_USER = {.username = "NULL", .user_type = 1};
 
 /**
@@ -17,35 +17,38 @@ User CURRENT_USER = {.username = "NULL", .user_type = 1};
 int isAdmin() { return CURRENT_USER.user_type == 1; }
 
 // Gets a line of input from the user
-int prompt(char** line) {
-    *line = (char*) malloc(MAX_PROMPT_LEN * sizeof(char));
-    if (*line == NULL) {
+int prompt(char **line)
+{
+    *line = (char *)malloc(MAX_PROMPT_LEN * sizeof(char));
+    if (*line == NULL)
+    {
         fprintf(stdout, "malloc failed");
         return -1;
     }
-    
+
     printf("\033[0;34m"); // Establece el color de texto de la terminal a azul
     printf("shell > ");
     printf("\033[0m"); // Resetea el color al por defecto
 
-
-    if (fgets(*line, MAX_PROMPT_LEN, stdin) == NULL) {
+    if (fgets(*line, MAX_PROMPT_LEN, stdin) == NULL)
+    {
         fprintf(stdout, "i/o error when prompting");
         return -1;
     }
 
     size_t len = strlen(*line);
-    if (len > 0 && (*line)[len - 1] == '\n') {
+    if (len > 0 && (*line)[len - 1] == '\n')
+    {
         (*line)[len - 1] = '\0';
     }
     return 0;
 }
 
-
 // Splits the input line into arguments. It also provides an argument count pointer
-char** splitArgs(char *input_line, int *arg_count) {
-    char** result = (char**)malloc(MAX_ARGS * sizeof(char*));
-    char* arg = (char*)malloc(MAX_ARG_LEN * sizeof(char));
+const char **splitArgs(char *input_line, int *arg_count)
+{
+    char **result = (char **)malloc(MAX_ARGS * sizeof(char *));
+    char *arg = (char *)malloc(MAX_ARG_LEN * sizeof(char));
     int i = 0;        // Received input iterator
     int j = 0;        // Argument iterator (resets every split)
     int k = 0;        // Result array iterator
@@ -53,54 +56,62 @@ char** splitArgs(char *input_line, int *arg_count) {
     *arg_count = 0;
 
     // Interates through every character until the string ends
-    while (input_line[i] != '\0') {
+    while (input_line[i] != '\0')
+    {
         // Checks if the iterator is inside a quote
-        if (input_line[i] == '\"') {
+        if (input_line[i] == '\"')
+        {
             // Toggle inside/outside quotes
             inQuotes = !inQuotes;
             i++;
             continue; // Jumps to next character because storing the quote is undesiderable
         }
 
-        if (inQuotes || !isspace(input_line[i])) {
+        if (inQuotes || !isspace(input_line[i]))
+        {
             // If the character is not a space OR we are inside quotes, the character is appended to the argument
             arg[j] = input_line[i];
             j++;
-        } else if (isspace(input_line[i]) && j > 0) {
+        }
+        else if (isspace(input_line[i]) && j > 0)
+        {
             // If we aren't inside quotes and we find a space, the argument is over
             // j must also be > 0 because if it isn't, the argument is not needed
             arg[j] = '\0'; // Marks end of string
             j++;
-            result[k] = (char*)malloc(j * sizeof(char)); // Allocates just enough space for the argument
-            strcpy(result[k], arg); // The argument is copied
+            result[k] = (char *)malloc(j * sizeof(char)); // Allocates just enough space for the argument
+            strcpy(result[k], arg);                       // The argument is copied
             free(arg);
             k++;
             // TODO: K igual no es necsario por argu_count
             (*arg_count)++;
             j = 0; // Reset the argument buffer
-            arg = (char*)malloc(MAX_ARG_LEN * sizeof(char));
+            arg = (char *)malloc(MAX_ARG_LEN * sizeof(char));
         }
         i++;
     }
     // If the quotes are open by the end of the string, the input is not correct
-    if (inQuotes) {
+    if (inQuotes)
+    {
         fprintf(stderr, "parse error: quote not closed at end of input\n");
 
         // Frees each character array
-        for (int i = 0; i < *arg_count; i++) {
+        for (int i = 0; i < *arg_count; i++)
+        {
             free(result[i]);
         }
         // Also frees the current argument
         free(arg);
         (*arg_count) = -1;
-        return result;
+        return (const char **)result;
     }
 
     // Once the line iteration is over, we check whether the last argument is not empty, and we add it if so
-    if (j > 0) {
+    if (j > 0)
+    {
         arg[j] = '\0';
         j++;
-        result[k] = (char*)malloc(j * sizeof(char));
+        result[k] = (char *)malloc(j * sizeof(char));
         strcpy(result[k], arg);
         free(arg);
         (*arg_count)++;
@@ -108,12 +119,13 @@ char** splitArgs(char *input_line, int *arg_count) {
     }
     // Si el input está vacío, al final de la función i será 0
     // En ese caso, también hay que liberar memoria
-    if (i == 0) {
+    if (i == 0)
+    {
         free(arg);
     }
-    
+
     result[k] = NULL; // Appends a null character to represent the array is over
-    return result;
+    return (const char **)result;
 }
 
 // Array de Comandos (Structs)
@@ -130,35 +142,38 @@ const Command commands[] = {
     {"man", &man_cmd},
     {"login", &login_cmd},
     {"printcommands", &printcommands_cmd},
-    {"clear",&clear_cmd},
-    {"printuser", &printuser_cmd}
-};
-
+    {"clear", &clear_cmd},
+    {"printuser", &printuser_cmd}};
 
 /**
  * @brief Itera sobre el array de comandos y devuelve un array dinámico con los nombres de los comandos.
- * 
+ *
  * @return char** Array dinámico con los nombres de los comandos (NULL-terminated).
  *         El usuario es responsable de liberar la memoria del array y de cada string.
  */
-char** getcommands(size_t* count) {
+char **getcommands(size_t *count)
+{
     // Calcular el número de comandos
     *count = sizeof(commands) / sizeof(commands[0]);
 
     // Reservar memoria para el array de strings
-    char** commandList = (char**)malloc((*count + 1) * sizeof(char*)); // +1 para el terminador NULL
-    if (commandList == NULL) {
+    char **commandList = (char **)malloc((*count + 1) * sizeof(char *)); // +1 para el terminador NULL
+    if (commandList == NULL)
+    {
         perror("Error al asignar memoria para commandList");
         return NULL;
     }
 
     // Iterar sobre el array de comandos y copiar los nombres
-    for (size_t i = 0; i < *count; i++) {
+    for (size_t i = 0; i < *count; i++)
+    {
         commandList[i] = strdup(commands[i].name); // Copiar el nombre del comando
-        if (commandList[i] == NULL) {
+        if (commandList[i] == NULL)
+        {
             perror("Error al duplicar el nombre del comando");
             // Liberar memoria previamente asignada en caso de error
-            for (size_t j = 0; j < i; j++) {
+            for (size_t j = 0; j < i; j++)
+            {
                 free(commandList[j]);
             }
             free(commandList);
@@ -170,7 +185,6 @@ char** getcommands(size_t* count) {
     return commandList;
 }
 
-
 // Tamaño del Array de comandos
 const int lenCommand = sizeof(commands) / sizeof(Command);
 
@@ -181,7 +195,7 @@ const int lenCommand = sizeof(commands) / sizeof(Command);
  * @return Un entero que devuelve el codigo de ejecuccion del comando para saber si ha sido correcto
  * o ha habido algun fallo.
  */
-int exec(int argc, char **args)
+int exec(int argc, const char **args)
 {
     // Si el primer argumento (nombre del programa) es nulo, lanzamos error
     if (args[0] == NULL)
@@ -189,11 +203,11 @@ int exec(int argc, char **args)
         return 0;
     }
 
-    //Loggear
+    // Loggear
     FILE *f = fopen(LOG_PATH, "a");
-    //Sacar la hora
+    // Sacar la hora
     time_t t;
-    //Puntero a estructura tm definida en time.h
+    // Puntero a estructura tm definida en time.h
     struct tm *tm_info;
 
     time(&t);
@@ -202,13 +216,13 @@ int exec(int argc, char **args)
     char buffer[26];
     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_info);
 
-    if (strcmp(CURRENT_USER.username,"NULL") == 0 ){
-        fprintf(f,"%s | USUARIO ANONIMO HA EJECUTADO EL COMANDO %s \n", buffer,args[0]);
-        
+    if (strcmp(CURRENT_USER.username, "NULL") == 0)
+    {
+        fprintf(f, "%s | USUARIO ANONIMO HA EJECUTADO EL COMANDO %s \n", buffer, args[0]);
     }
     else
     {
-        fprintf(f,"%s | USUARIO : %s HA EJECUTADO EL COMANDO %s \n", buffer, CURRENT_USER.username,args[0]);
+        fprintf(f, "%s | USUARIO : %s HA EJECUTADO EL COMANDO %s \n", buffer, CURRENT_USER.username, args[0]);
         insert_log(args[0], CURRENT_USER.username, buffer);
     }
     fclose(f);
@@ -218,19 +232,16 @@ int exec(int argc, char **args)
     for (int i = 0; i < lenCommand; i++)
     {
 
-        if (strcmp(commands[i].name,args[0]) == 0)
+        if (strcmp(commands[i].name, args[0]) == 0)
         {
             // args + 1 devuelve el puntero a la siguiente posicion de memoria
             //  es decir, pasamos el array pero sin el primer elemento
             // TODO: Eliminar correctamente el primer argumento recibido
             commands[i].commandPtr(argc, args);
             return 0;
-            }
-
         }
+    }
 
     fprintf(stderr, "%s no es un comando valido! \n", args[0]);
     return -2;
 }
-
-

@@ -6,9 +6,11 @@
 #include "headers/commands.h"
 #include <unistd.h>
 
-int main(int argc, char const *argv[]) {
+int main(int argc, char const *argv[])
+{
 
-    if ( argc == 2 && strcmp(argv[1], "--create-database") == 0) {
+    if (argc == 2 && strcmp(argv[1], "--create-database") == 0)
+    {
         printf("Initialiting database...\n");
         initDatabase();
         cargar_csvs();
@@ -21,7 +23,8 @@ int main(int argc, char const *argv[]) {
 
         // Gets a line of input from the user
         int prompt_status = prompt(&line);
-        if (prompt_status != 0) {
+        if (prompt_status != 0)
+        {
             return -1;
         }
 
@@ -32,13 +35,15 @@ int main(int argc, char const *argv[]) {
             return 0;
         }
         // Splits the input line into arguments
-        char **args = splitArgs(line, &arg_count);
-        if (arg_count != -1) {
+        const char **args = splitArgs(line, &arg_count);
+        if (arg_count != -1)
+        {
             exec(arg_count, args);
         }
 
-        for (int i = 0; i < arg_count; i++) {
-            free(args[i]);
+        for (int i = 0; i < arg_count; i++)
+        {
+            free((void *)args[i]);
         }
         free(args);
         free(line);

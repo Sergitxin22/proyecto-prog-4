@@ -3,20 +3,24 @@
 #include <string.h>
 #include "../headers/shell.h"
 
-int print_file(char* path) {
+int print_file(const char *path)
+{
     FILE *file = fopen(path, "r");
-    if (!file) {
+    if (!file)
+    {
         printf("%s", path);
         perror("cat: error opening file");
         return 1;
     }
 
     char line[2048];
-    char* print_line;
+    char *print_line;
 
-    while (fgets(line, sizeof(line), file)) {
-        print_line = (char*)malloc(strlen(line) + 1);  // +1 para el caracter nulo
-        if (print_line == NULL) {
+    while (fgets(line, sizeof(line), file))
+    {
+        print_line = (char *)malloc(strlen(line) + 1); // +1 para el caracter nulo
+        if (print_line == NULL)
+        {
             perror("cat: memory allocation error");
             fclose(file);
             return 1;
@@ -32,8 +36,9 @@ int print_file(char* path) {
     return 0;
 }
 
-int cat_cmd(int arc, char **args) {
-    char* path = args[1];
+int cat_cmd(int arc, const char **args)
+{
+    const char *path = args[1];
     print_file(path);
     return 0;
 }
