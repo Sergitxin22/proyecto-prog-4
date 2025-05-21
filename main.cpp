@@ -6,9 +6,13 @@
 #include "headers/commands.h"
 #include <unistd.h>
 
+
+char INIT_DIR[128];
+
 int main(int argc, char const *argv[])
 {
-
+    
+    getcwd(INIT_DIR, 128);
     if (argc == 2 && strcmp(argv[1], "--create-database") == 0)
     {
         printf("Initialiting database...\n");

@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "../headers/commands.h"
+#include "../headers/status.h"
 
 /**
  * @brief Muestra la versión del shell
@@ -13,7 +14,7 @@
  * @param args Arreglo de argumentos recibidos
  * @return int 0 si la ejecución fue exitosa
  */
-int ver_cmd(int argc, const char **args)
+Status ver_cmd(int argc, const char **args)
 {
     int show_short_version = 0;
     const char *message = "";
@@ -33,14 +34,11 @@ int ver_cmd(int argc, const char **args)
 
     if (show_short_version)
     {
-        message = "0.1";
+        message = "0.1\n";
     }
     else
     {
-        message = "shell version 0.1";
+        message = "shell version 0.1\n";
     }
-
-    printf("%s\n", message);
-
-    return 0;
+    return Status(0, message);
 }

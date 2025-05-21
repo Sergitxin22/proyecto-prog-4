@@ -393,6 +393,7 @@ int initDatabase()
     return 0;
 }
 
+/*
 void insert_log(const char *desc, char *username, char *date)
 {
     const char *sql = "INSERT INTO LOG (DESC, USER_ID, DATE) VALUES (?, ?, ?);";
@@ -419,6 +420,7 @@ void insert_log(const char *desc, char *username, char *date)
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 }
+*/
 
 int get_user_id(char *username)
 {

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "../headers/commands.h"
 
 /**
@@ -15,20 +16,17 @@
  * @return int 0 si la ejecución fue exitosa
  */
 
-int print_cmd(int argc, const char **args)
+Status print_cmd(int argc, const char **args)
 {
-    int line_jump = 1;     // Por defecto, imprimimos con salto de línea
     int line_per_line = 0; // Por defecto, no imprimimos cada argumento en una nueva línea
     int init_index = 1;    // Índice donde empiezan los argumentos a imprimir
 
+    char buffer[512];
+    char length = 0;
+
     if (argc > 1)
     {
-        if (strcmp(args[1], "-n") == 0)
-        {
-            line_jump = 0;  // Si el primer argumento es "-n", no imprimimos salto de línea
-            init_index = 2; // Los argumentos a imprimir comienzan después de "-n"
-        }
-        else if (strcmp(args[1], "-l") == 0)
+        if (strcmp(args[1], "-l") == 0)
         {
             line_per_line = 1; // Si el primer argumento es "-l", imprimimos cada argumento en una nueva línea
             init_index = 2;    // Los argumentos a imprimir comienzan después de "-l"
@@ -39,22 +37,30 @@ int print_cmd(int argc, const char **args)
     {
         if (line_per_line)
         {
-            printf("%s\n", args[i]); // Imprime el argumento seguido de un salto de línea
+            strcpy(buffer + length, args[i]);
+            length += strlen(args[i]);
+            buffer[length] = '\n';
+            length++;
         }
         else
         {
-            printf("%s", args[i]); // Imprime el argumento
+            strcpy(buffer + length, args[i]);
+            length += strlen(args[i]);
             if (i < argc - 1)
             {
-                printf(" "); // Separar palabras con espacio
+               buffer[length] = ' '; // Separar palabras con espacio
+               length++;
             }
         }
     }
 
     if (line_per_line != 1)
     {
-        printf("\n");
+        buffer[length] = '\n';
+        length++;
     }
 
-    return 0;
+    buffer[length] = '\0';
+
+    return Status(0, buffer);
 }

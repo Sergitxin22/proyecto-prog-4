@@ -4,6 +4,7 @@
 #define MAX_ARG_LEN 64
 #define MAX_PROMPT_LEN 128
 #include <stddef.h>
+#include "status.h"
 
 typedef struct User
 {
@@ -11,8 +12,9 @@ typedef struct User
     int user_type;
 } User;
 
-// Variable global
+// Variables globales
 extern User CURRENT_USER;
+extern char INIT_DIR[128];
 
 int isAdmin(void);
 
@@ -30,7 +32,7 @@ Los argumentos del comando (args) son las opciones que le pasa el usuario, NULL 
 typedef struct Command
 {
     const char *name;
-    int (*commandPtr)(int argc, const char **args);
+    Status (*commandPtr)(int argc, const char **args);
 } Command;
 
 #endif // SHELL_H

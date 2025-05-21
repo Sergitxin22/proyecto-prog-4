@@ -9,11 +9,13 @@ class Status {
     const char* output;
 
     public:
-    Status(int status, char* output);
+    Status(int status, const char* output);
+    Status(int status); // Status con output vacío
     ~Status();
 
     int getStatus() const;
     const char* getOutput() const;
+    int isOutputEmpty() const;
 };
 
 #endif

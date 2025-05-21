@@ -2,43 +2,36 @@
 #include <stdio.h>
 #include <string.h>
 #include "../headers/shell.h"
+#include "../headers/status.h"
 
-int print_file(const char *path)
+
+
+Status cat_cmd(int arc, const char **args)
 {
-    FILE *file = fopen(path, "r");
-    if (!file)
-    {
-        printf("%s", path);
+    FILE *file = fopen(args[1], "rb");
+    if (!file) {
         perror("cat: error opening file");
-        return 1;
+        return Status(1);
     }
 
-    char line[2048];
-    char *print_line;
+    fseek(file, 0, SEEK_END); // Mueve el cursor al final del fichero
+    long file_size = ftell(file); // Obtiene la posición del cursor (el tamaño)
+    rewind(file); // Manda el cursor al principio, para leer de nuevo
 
-    while (fgets(line, sizeof(line), file))
-    {
-        print_line = (char *)malloc(strlen(line) + 1); // +1 para el caracter nulo
-        if (print_line == NULL)
-        {
-            perror("cat: memory allocation error");
-            fclose(file);
-            return 1;
-        }
-
-        strcpy(print_line, line);
-        printf("%s", print_line);
-        free(print_line);
+    char file_text[file_size + 1];
+    if (!file_text) {
+        perror("cat: memory allocation error\n");
+        fclose(file);
+        return Status(1);
     }
 
+    // Introduce el contenido del fichero a file_text
+    fread(file_text, 1, file_size, file);
+
+    file_text[file_size] = '\0'; // Null-terminate the string
     fclose(file);
-    printf("\n");
-    return 0;
-}
-
-int cat_cmd(int arc, const char **args)
-{
-    const char *path = args[1];
-    print_file(path);
-    return 0;
+    if (file_text == NULL) {
+        Status(-1, "cat: could not read file");
+    }
+    return Status(0, file_text);
 }

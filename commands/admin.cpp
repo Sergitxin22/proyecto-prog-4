@@ -4,6 +4,7 @@
 #include "../headers/db.h"
 #include "../lib/sqlite3/sqlite3.h"
 #include "../headers/shell.h"
+#include "../headers/status.h"
 
 void showUsers()
 {
@@ -93,18 +94,16 @@ void showMenu()
   printf("5) Exit admin menu\n");
 }
 
-int admin_cmd(int argc, const char **args)
+Status admin_cmd(int argc, const char **args)
 {
   if (!isAdmin())
   {
-    fprintf(stderr, "admin is not a valid command\n");
-    return -1;
+    return Status(-1, "admin is not a valid command\n");
   }
 
   if (argc > 1)
   {
-    perror("admin: incorrect number of arguments\n");
-    return -1;
+    return Status(-1, "admin: incorrect number of arguments\n");
   }
 
   char input[10];
@@ -151,5 +150,5 @@ int admin_cmd(int argc, const char **args)
   }
 
   printf("\n");
-  return 0;
+  return Status(0);
 }

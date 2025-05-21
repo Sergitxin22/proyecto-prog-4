@@ -1,4 +1,5 @@
 #include "../headers/commands.h"
+#include "../headers/status.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -13,7 +14,7 @@
  * @param args Array de argumentos recibidos
  * @return int 0 si la ejecución fue exitosa
  */
-int writeline_cmd(int argc, const char **args)
+Status writeline_cmd(int argc, const char **args)
 {
     if (argc > 2)
     {
@@ -40,8 +41,7 @@ int writeline_cmd(int argc, const char **args)
         FILE *f = fopen(file_path, mode);
         if (f == NULL)
         {
-            fprintf(stderr, "writeline: not such file");
-            return -1;
+            return Status(-1, "writeline: not such file\n");
         }
 
         fprintf(f, text);
@@ -52,11 +52,10 @@ int writeline_cmd(int argc, const char **args)
             free((char *)text);
         }
 
-        return 0;
+        return Status(0);
     }
     else
     {
-        fprintf(stderr, "writeline: not enough arguments");
-        return -1;
+        return Status(-1, "writeline: not enough arguments\n");
     }
 }

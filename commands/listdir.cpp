@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <dirent.h>
 #include <stdlib.h>
+#include <string.h>
+#include "../headers/status.h"
 
 /**
  * @brief Lista un directorio
@@ -10,7 +12,7 @@
  * @param args Array de argumentos recibidos
  * @return int 0 si la ejecución fue exitosa
  */
-int listdir_cmd(int argc, const char **args)
+Status listdir_cmd(int argc, const char **args)
 {
     struct dirent *dir;
     const char *directory = ".";
@@ -23,14 +25,24 @@ int listdir_cmd(int argc, const char **args)
     DIR *d = opendir(directory);
     if (d == NULL)
     {
-        fprintf(stderr, "listdir: directory could not be opened");
-        return -1;
+        return Status(-1, "listdir: directory could not be opened\n");
     }
 
+    int length = 0;
+    char buffer[65536];
+    buffer[0] = '\0';
     while ((dir = readdir(d)) != NULL)
     {
-        printf("%s\n", dir->d_name);
+        const char *name = dir->d_name;
+        int name_length = strlen(name);
+
+        strcat(buffer, name);
+        length += name_length;
+        buffer[length] = '\n';
+        length++;
+        buffer[length] = '\0';
     }
+    buffer[length] = '\0';
     closedir(d);
-    return 0;
+    return Status(0, buffer);
 }

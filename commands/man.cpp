@@ -301,9 +301,9 @@ int print_command(const char *name)
  * @param args Arreglo de argumentos recibidos
  * @return int 0 si la ejecución fue exitosa
  */
-int man_cmd(int arc, const char **args)
+Status man_cmd(int arc, const char **args)
 {
     const char *name = args[1];
     print_command(name);
-    return 0;
+    return Status(0);
 }

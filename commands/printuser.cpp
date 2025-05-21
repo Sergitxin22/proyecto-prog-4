@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "../headers/commands.h"
 #include "../headers/shell.h"
+#include "../headers/status.h"
 
 /**
  * @brief Imprime los datos del usuario actual
@@ -9,7 +10,7 @@
  * @param args Arreglo de argumentos recibidos
  * @return int 0 si la ejecución fue exitosa
  */
-int printuser_cmd(int argc, const char **args)
+Status printuser_cmd(int argc, const char **args)
 {
 
     // TODO: argumentos para especificar la impresión de datos
@@ -23,7 +24,9 @@ int printuser_cmd(int argc, const char **args)
     {
         user_type_name = "User";
     }
-    printf("Current user: %s\n", CURRENT_USER.username);
-    printf("User type: %d (%s)\n", user_type, user_type_name);
-    return 0;
+
+    char output[60];
+
+    sprintf(output, "Current user: %s\nUser type: %d (%s)\n", CURRENT_USER.username, user_type, user_type_name);
+    return Status(0, output);
 }

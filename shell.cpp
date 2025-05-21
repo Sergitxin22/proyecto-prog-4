@@ -5,8 +5,11 @@
 #include <time.h>
 #include "headers/commands.h"
 #include "headers/shell.h"
+#include "headers/status.h"
 #include "conf.h"
 #include "headers/db.h"
+
+const char* log_path = LOG_PATH;
 
 // Incializamos la variable global. Por defecto NO será admin.
 User CURRENT_USER = {.username = "NULL", .user_type = 1};
@@ -204,7 +207,11 @@ int exec(int argc, const char **args)
     }
 
     // Loggear
-    FILE *f = fopen(LOG_PATH, "a");
+    char log_full_path[128];
+    strcpy(log_full_path, INIT_DIR);
+    strcat(log_full_path, "/");
+    strcat(log_full_path, log_path);
+    FILE *f = fopen(log_full_path, "a");
     // Sacar la hora
     time_t t;
     // Puntero a estructura tm definida en time.h
@@ -222,8 +229,8 @@ int exec(int argc, const char **args)
     }
     else
     {
-        fprintf(f, "%s | USUARIO : %s HA EJECUTADO EL COMANDO %s \n", buffer, CURRENT_USER.username, args[0]);
-        insert_log(args[0], CURRENT_USER.username, buffer);
+        fprintf(f, "%s | USUARIO %s HA EJECUTADO EL COMANDO %s \n", buffer, CURRENT_USER.username, args[0]);
+        // insert_log(args[0], CURRENT_USER.username, buffer);
     }
     fclose(f);
     // Comprueba si el primer argumento (Empieza en 0) el cual es el nombre del programa
@@ -234,11 +241,19 @@ int exec(int argc, const char **args)
 
         if (strcmp(commands[i].name, args[0]) == 0)
         {
-            // args + 1 devuelve el puntero a la siguiente posicion de memoria
-            //  es decir, pasamos el array pero sin el primer elemento
-            // TODO: Eliminar correctamente el primer argumento recibido
-            commands[i].commandPtr(argc, args);
-            return 0;
+            // Se ejecuta el comando
+            Status status = commands[i].commandPtr(argc, args);
+
+            // Se imprime el output en el flujo correcto,
+            // (en función del código de estado)
+            if (!status.isOutputEmpty()) {
+                if (status.getStatus() == 0) {
+                    fprintf(stdout, "%s", status.getOutput());
+                } else {
+                    fprintf(stderr, "%s", status.getOutput());
+                }
+            }
+            return status.getStatus();
         }
     }
 

@@ -20,24 +20,24 @@ void handler(int signal)
  * @param args Array de argumentos recibidos
  * @return int 0 si la ejecución fue exitosa
  */
-int cd_cmd(int argc, const char **args)
+Status cd_cmd(int argc, const char **args)
 {
     signal(SIGSEGV, handler);
     if (argc != 2)
     {
-        fprintf(stderr, "cd: incorrect number of arguments\n");
-        return -2;
+        return Status(-2, "cd: incorrect number of arguments\n");
     }
 
     const char *path = args[1];
     int status = chdir(path);
     if (status != 0)
     {
-        fprintf(stderr, "cd: failed to change directory to %s\n", path);
-        return status;
+        return Status(-1, "cd: failed to change directory\n");
     }
 
     char buffer[512];
-    printf("Directory changed to %s\n", getcwd(buffer, 512));
-    return 0;
+    char output[530];
+    getcwd(buffer, sizeof(buffer));
+    snprintf(output, sizeof(output), "Directory changed to %s\n", buffer);
+    return Status(0, output);
 }
