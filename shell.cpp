@@ -116,17 +116,11 @@ const char **splitArgs(char *input_line, int *arg_count)
         j++;
         result[k] = (char *)malloc(j * sizeof(char));
         strcpy(result[k], arg);
-        free(arg);
         (*arg_count)++;
         k++;
     }
-    // Si el input está vacío, al final de la función i será 0
-    // En ese caso, también hay que liberar memoria
-    if (i == 0)
-    {
-        free(arg);
-    }
-
+    
+   free(arg);
     result[k] = NULL; // Appends a null character to represent the array is over
     return (const char **)result;
 }
