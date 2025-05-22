@@ -119,8 +119,8 @@ const char **splitArgs(char *input_line, int *arg_count)
         (*arg_count)++;
         k++;
     }
-    
-   free(arg);
+
+    free(arg);
     result[k] = NULL; // Appends a null character to represent the array is over
     return (const char **)result;
 }
