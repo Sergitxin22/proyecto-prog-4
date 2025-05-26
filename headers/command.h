@@ -6,7 +6,7 @@
 class Command
 {
 private:
-    char *name;
+    const char *name;
     Status (*commandPtr)(int argc, const char **args);
 
 public:
