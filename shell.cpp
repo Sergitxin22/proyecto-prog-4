@@ -6,18 +6,15 @@
 #include "headers/commands.h"
 #include "headers/shell.h"
 #include "headers/status.h"
+#include "headers/admin.h"
 #include "conf.h"
 #include "headers/db.h"
 
 const char* log_path = LOG_PATH;
 
 // Incializamos la variable global. Por defecto NO será admin.
-User CURRENT_USER = {.username = "NULL", .user_type = 1};
+User *CURRENT_USER = new Admin(0, "NULL");
 
-/**
- * Devuelve 1 (true) si el usuario actual es administrador/a
- */
-int isAdmin() { return CURRENT_USER.user_type == 1; }
 
 // Gets a line of input from the user
 int prompt(char **line)
@@ -217,13 +214,13 @@ int exec(int argc, const char **args)
     char buffer[26];
     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_info);
 
-    if (strcmp(CURRENT_USER.username, "NULL") == 0)
+    if (strcmp(CURRENT_USER->getName(), "NULL") == 0)
     {
         fprintf(f, "%s | USUARIO ANONIMO HA EJECUTADO EL COMANDO %s \n", buffer, args[0]);
     }
     else
     {
-        fprintf(f, "%s | USUARIO %s HA EJECUTADO EL COMANDO %s \n", buffer, CURRENT_USER.username, args[0]);
+        fprintf(f, "%s | USUARIO %s HA EJECUTADO EL COMANDO %s \n", buffer, CURRENT_USER->getName(), args[0]);
         // insert_log(args[0], CURRENT_USER.username, buffer);
     }
     fclose(f);

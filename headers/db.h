@@ -8,7 +8,7 @@
 sqlite3 *openDatabase();
 int initDatabase();
 int cargar_csvs();
-User *getAllUsers(int *count);
+User **getAllUsers(int *count);
 void insertUsers(char username[], char password[], int isAdmin);
 int userExists(char *username);
 void deleteUserDB(char *username);

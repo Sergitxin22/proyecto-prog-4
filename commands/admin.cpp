@@ -9,12 +9,13 @@
 void showUsers()
 {
   int count = 0;
-  User *users = getAllUsers(&count);
+  User **users = getAllUsers(&count);
   printf("----------------------------------------- \n");
   printf("Total users in the system: %d \n", count);
   for (int i = 0; i < count; i++)
   {
-    printf("%d) %s \n", i + 1, users[i].username);
+    printf("%d) %s \n", i + 1, users[i]->getName());
+    delete(users[i]);
   }
   printf("\n");
   free(users);
@@ -96,7 +97,7 @@ void showMenu()
 
 Status admin_cmd(int argc, const char **args)
 {
-  if (!isAdmin())
+  if (!CURRENT_USER->isAdmin())
   {
     return Status(-1, "admin is not a valid command\n");
   }

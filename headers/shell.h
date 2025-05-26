@@ -5,18 +5,12 @@
 #define MAX_PROMPT_LEN 128
 #include <stddef.h>
 #include "status.h"
-
-typedef struct User
-{
-    char username[30];
-    int user_type;
-} User;
+#include "user.h"
 
 // Variables globales
-extern User CURRENT_USER;
+extern User *CURRENT_USER;
 extern char INIT_DIR[128];
 
-int isAdmin(void);
 
 int prompt(char **line);
 const char **splitArgs(char *input_line, int *arg_count);

@@ -1,5 +1,6 @@
 #include "../lib/sqlite3/sqlite3.h"
 #include "../headers/db.h"
+#include "../headers/admin.h"
 #include "../conf.h"
 #include <stdio.h>
 #include <string.h>
@@ -122,13 +123,13 @@ void insertUsers(char username[], char password[], int isAdmin)
 /**
  * Obtener los usuarios de la base de datos.
  */
-User *getAllUsers(int *count)
+User **getAllUsers(int *count)
 {
     char *ErrMsg = 0;
     sqlite3 *db = openDatabase();
 
     // Query
-    const char *sql = "SELECT NAME, PASSWORD, IS_ADMIN FROM USER";
+    const char *sql = "SELECT NAME, PASSWORD, IS_ADMIN, ID FROM USER";
     sqlite3_stmt *stmt;
     int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 
@@ -140,14 +141,14 @@ User *getAllUsers(int *count)
     }
 
     // Puntero que apuntara a un array dinamico.
-    User *users = NULL;
+    User **users = NULL;
     // Para saber cuantos usuarios hay.
     int size = 0;
     // POR CADA FILA
     while (sqlite3_step(stmt) == SQLITE_ROW)
     {
         // Crear un array dinamico de usuarios que vaya aumentando por cada usuario
-        users = (User *)realloc(users, (size + 1) * sizeof(User));
+        users = (User **)realloc(users, (size + 1) * sizeof(User*));
         if (!users)
         {
             fprintf(stderr, "Error al asignar memoria dinamica! \n");
@@ -158,11 +159,19 @@ User *getAllUsers(int *count)
         }
 
         // Asignamos el ID
+        int id = sqlite3_column_int(stmt, 4);
         // Asignamos el usuario y la contraseña.
         const char *username = (const char *)sqlite3_column_text(stmt, 0);
-        strcpy(users[size].username, username);
+
+        User* user = NULL;
         // Asignamos si es admin o no.
-        users[size].user_type = sqlite3_column_int(stmt, 2);
+        int isAdmin = sqlite3_column_int(stmt, 2);
+        if (isAdmin) {
+            user = new Admin(id, username);
+        } else {
+            user = new User(id, username);
+        }
+        users[size] = user;
         size++;
     }
 

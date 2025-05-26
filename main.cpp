@@ -36,6 +36,7 @@ int main(int argc, char const *argv[])
         {
             printf("exiting shell\n");
             free(line);
+                delete(CURRENT_USER);
             return 0;
         }
         // Splits the input line into arguments

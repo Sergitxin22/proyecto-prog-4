@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "../headers/shell.h"
 #include "../headers/status.h"
+#include "../headers/admin.h"
 #include "../headers/commands.h"
 #include "../headers/db.h"
 #include "../lib/sqlite3/sqlite3.h"
@@ -38,9 +39,14 @@ Status login_cmd(int argc, const char **args)
     {
         return Status(-4, "login: incorrect password\n");
     }
+    delete(CURRENT_USER);
+    int isAdmin = is_user_admin(username);
+    if (isAdmin) {
+        CURRENT_USER = new Admin(0, username);
+    } else { // TODO: GET THE ID'S
+        CURRENT_USER = new User(0, username);
+    }
 
-    strcpy(CURRENT_USER.username, username);
-    CURRENT_USER.user_type = is_user_admin(username);
     char output[40];
     snprintf(output, sizeof(output), "Successfully logged in. Welcome, %s\n", username);
     return Status(0, output);
