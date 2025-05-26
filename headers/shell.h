@@ -29,10 +29,10 @@ int exec(int argc, const char **args);
 que ejecuta el comando.
 Los argumentos del comando (args) son las opciones que le pasa el usuario, NULL si ninguna opcion.
 */
-typedef struct Command
-{
-    const char *name;
-    Status (*commandPtr)(int argc, const char **args);
-} Command;
+// typedef struct Command
+// {
+//     const char *name;
+//     Status (*commandPtr)(int argc, const char **args);
+// } Command;
 
 #endif // SHELL_H
