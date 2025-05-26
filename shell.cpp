@@ -8,8 +8,9 @@
 #include "headers/status.h"
 #include "conf.h"
 #include "headers/db.h"
+#include "headers/command.h"
 
-const char* log_path = LOG_PATH;
+const char *log_path = LOG_PATH;
 
 // Incializamos la variable global. Por defecto NO será admin.
 User CURRENT_USER = {.username = "NULL", .user_type = 1};
@@ -164,7 +165,7 @@ char **getcommands(size_t *count)
     // Iterar sobre el array de comandos y copiar los nombres
     for (size_t i = 0; i < *count; i++)
     {
-        commandList[i] = strdup(commands[i].name); // Copiar el nombre del comando
+        commandList[i] = strdup(commands[i].getName()); // Copiar el nombre del comando
         if (commandList[i] == NULL)
         {
             perror("Error al duplicar el nombre del comando");
@@ -233,17 +234,21 @@ int exec(int argc, const char **args)
     for (int i = 0; i < lenCommand; i++)
     {
 
-        if (strcmp(commands[i].name, args[0]) == 0)
+        if (strcmp(commands[i].getName(), args[0]) == 0)
         {
             // Se ejecuta el comando
-            Status status = commands[i].commandPtr(argc, args);
+            Status status = commands[i].execute(argc, args);
 
             // Se imprime el output en el flujo correcto,
             // (en función del código de estado)
-            if (!status.isOutputEmpty()) {
-                if (status.getStatus() == 0) {
+            if (!status.isOutputEmpty())
+            {
+                if (status.getStatus() == 0)
+                {
                     fprintf(stdout, "%s", status.getOutput());
-                } else {
+                }
+                else
+                {
                     fprintf(stderr, "%s", status.getOutput());
                 }
             }
