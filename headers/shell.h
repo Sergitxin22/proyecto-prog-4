@@ -16,17 +16,17 @@ int prompt(char **line);
 const char **splitArgs(char *input_line, int *arg_count);
 char **getcommands(size_t *outSize);
 
-int exec(int argc, const char **args);
+Status* exec(int argc, const char **args);
 
 /**
 * Estructura COMMAND que contiene el nombre del Comando y un puntero a la funcion
 que ejecuta el comando.
 Los argumentos del comando (args) son las opciones que le pasa el usuario, NULL si ninguna opcion.
 */
-typedef struct Command
-{
-    const char *name;
-    Status (*commandPtr)(int argc, const char **args);
-} Command;
+// typedef struct Command
+// {
+//     const char *name;
+//     Status (*commandPtr)(int argc, const char **args);
+// } Command;
 
 #endif // SHELL_H

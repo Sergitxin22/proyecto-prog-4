@@ -36,14 +36,28 @@ int main(int argc, char const *argv[])
         {
             printf("exiting shell\n");
             free(line);
-                delete(CURRENT_USER);
+            delete(CURRENT_USER);
             return 0;
         }
         // Splits the input line into arguments
         const char **args = splitArgs(line, &arg_count);
         if (arg_count != -1)
         {
-            exec(arg_count, args);
+            Status *status = exec(arg_count, args);
+            // Se imprime el output en el flujo correcto,
+            // (en función del código de estado)
+            if (!status->isOutputEmpty())
+            {
+                if (status->getStatus() == 0)
+                {
+                    fprintf(stdout, "%s", status->getOutput());
+                }
+                else
+                {
+                    fprintf(stderr, "%s", status->getOutput());
+                }
+            }
+            delete(status);
         }
 
         for (int i = 0; i < arg_count; i++)

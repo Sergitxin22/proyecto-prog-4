@@ -9,8 +9,9 @@
 #include "headers/admin.h"
 #include "conf.h"
 #include "headers/db.h"
+#include "headers/command.h"
 
-const char* log_path = LOG_PATH;
+const char *log_path = LOG_PATH;
 
 // Incializamos la variable global. Por defecto NO será admin.
 User *CURRENT_USER = new Admin(0, "NULL");
@@ -161,7 +162,7 @@ char **getcommands(size_t *count)
     // Iterar sobre el array de comandos y copiar los nombres
     for (size_t i = 0; i < *count; i++)
     {
-        commandList[i] = strdup(commands[i].name); // Copiar el nombre del comando
+        commandList[i] = strdup(commands[i].getName()); // Copiar el nombre del comando
         if (commandList[i] == NULL)
         {
             perror("Error al duplicar el nombre del comando");
@@ -189,12 +190,12 @@ const int lenCommand = sizeof(commands) / sizeof(Command);
  * @return Un entero que devuelve el codigo de ejecuccion del comando para saber si ha sido correcto
  * o ha habido algun fallo.
  */
-int exec(int argc, const char **args)
+Status* exec(int argc, const char **args)
 {
-    // Si el primer argumento (nombre del programa) es nulo, lanzamos error
+    // Si el primer argumento (nombre del programa) es nulo, se termina la ejecución
     if (args[0] == NULL)
     {
-        return 0;
+        return new Status(0);
     }
 
     // Loggear
@@ -230,24 +231,16 @@ int exec(int argc, const char **args)
     for (int i = 0; i < lenCommand; i++)
     {
 
-        if (strcmp(commands[i].name, args[0]) == 0)
+        if (strcmp(commands[i].getName(), args[0]) == 0)
         {
             // Se ejecuta el comando
-            Status status = commands[i].commandPtr(argc, args);
-
-            // Se imprime el output en el flujo correcto,
-            // (en función del código de estado)
-            if (!status.isOutputEmpty()) {
-                if (status.getStatus() == 0) {
-                    fprintf(stdout, "%s", status.getOutput());
-                } else {
-                    fprintf(stderr, "%s", status.getOutput());
-                }
-            }
-            return status.getStatus();
+            Status status = commands[i].execute(argc, args);
+            Status *status2 = new Status(status.getStatus(), status.getOutput());
+            return status2;
         }
     }
 
-    fprintf(stderr, "%s no es un comando valido! \n", args[0]);
-    return -2;
+    char output[40];
+    snprintf(output, sizeof(output), "%s no es un comando valido! \n", args[0]);
+    return new Status(-2, output);
 }
