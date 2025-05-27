@@ -5,8 +5,8 @@
 // Además de devolver un código de estado, devuelve un mensaje de salida.
 class Status {
     private:
-    int status;
-    const char* output;
+    int status; //4 bytes
+    const char* output; // Bytes desconocidos
 
     public:
     Status(int status, const char* output);
@@ -16,6 +16,9 @@ class Status {
     int getStatus() const;
     const char* getOutput() const;
     int isOutputEmpty() const;
+
+    void serialize(char* buffer);
+    void deserialize(char* buffer);
 };
 
 #endif
