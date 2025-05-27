@@ -190,12 +190,12 @@ const int lenCommand = sizeof(commands) / sizeof(Command);
  * @return Un entero que devuelve el codigo de ejecuccion del comando para saber si ha sido correcto
  * o ha habido algun fallo.
  */
-Status exec(int argc, const char **args)
+Status* exec(int argc, const char **args)
 {
     // Si el primer argumento (nombre del programa) es nulo, se termina la ejecución
     if (args[0] == NULL)
     {
-        return Status(0);
+        return new Status(0);
     }
 
     // Loggear
@@ -235,11 +235,12 @@ Status exec(int argc, const char **args)
         {
             // Se ejecuta el comando
             Status status = commands[i].execute(argc, args);
-            return status;
+            Status *status2 = new Status(status.getStatus(), status.getOutput());
+            return status2;
         }
     }
 
     char output[40];
     snprintf(output, sizeof(output), "%s no es un comando valido! \n", args[0]);
-    return Status(-2, output);
+    return new Status(-2, output);
 }

@@ -43,20 +43,21 @@ int main(int argc, char const *argv[])
         const char **args = splitArgs(line, &arg_count);
         if (arg_count != -1)
         {
-            Status status = exec(arg_count, args);
+            Status *status = exec(arg_count, args);
             // Se imprime el output en el flujo correcto,
             // (en función del código de estado)
-            if (!status.isOutputEmpty())
+            if (!status->isOutputEmpty())
             {
-                if (status.getStatus() == 0)
+                if (status->getStatus() == 0)
                 {
-                    fprintf(stdout, "%s", status.getOutput());
+                    fprintf(stdout, "%s", status->getOutput());
                 }
                 else
                 {
-                    fprintf(stderr, "%s", status.getOutput());
+                    fprintf(stderr, "%s", status->getOutput());
                 }
             }
+            delete(status);
         }
 
         for (int i = 0; i < arg_count; i++)

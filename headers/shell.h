@@ -16,7 +16,7 @@ int prompt(char **line);
 const char **splitArgs(char *input_line, int *arg_count);
 char **getcommands(size_t *outSize);
 
-Status exec(int argc, const char **args);
+Status* exec(int argc, const char **args);
 
 /**
 * Estructura COMMAND que contiene el nombre del Comando y un puntero a la funcion
