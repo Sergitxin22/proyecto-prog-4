@@ -12,7 +12,8 @@ Status::Status(int status, const char* output) {
 
 Status::Status(int status) {
     this->status = status;
-    this->output = NULL;
+    this->output = new char[1];
+    strcpy((char *) this->output, "");
 }
 
 Status::~Status() {
@@ -28,7 +29,7 @@ const char* Status::getOutput() const {
 }
 
 int Status::isOutputEmpty() const {
-    if (this->output == NULL) {
+    if (this->output == "") {
         return true;
     }
     return false;

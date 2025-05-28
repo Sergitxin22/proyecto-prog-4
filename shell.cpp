@@ -138,7 +138,8 @@ const Command commands[] = {
     {"login", &login_cmd},
     {"printcommands", &printcommands_cmd},
     {"clear", &clear_cmd},
-    {"printuser", &printuser_cmd}};
+    {"remote", &remote},
+    {"listen", &listen}};
 
 /**
  * @brief Itera sobre el array de comandos y devuelve un array dinámico con los nombres de los comandos.
