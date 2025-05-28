@@ -17,4 +17,5 @@ Status printcommands_cmd(int argc, const char **args);
 Status login_cmd(int argc, const char **args);
 Status clear_cmd(int argc, const char **args);
 Status printuser_cmd(int argc, const char **args);
+Status remote(int argc, const char **args);
 #endif

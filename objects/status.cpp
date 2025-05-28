@@ -7,7 +7,7 @@
 Status::Status(int status, const char* output) {
     this->status = status;
     this->output = new char[strlen(output) + 1];
-    strcpy((char *) this->output, output);
+    strcpy((char*) this->output, output);
 }
 
 Status::Status(int status) {
@@ -32,6 +32,18 @@ int Status::isOutputEmpty() const {
         return true;
     }
     return false;
+}
+
+
+//Constructor Copia
+Status::Status(const Status& other) {
+    this->status = other.status;
+    if (other.output) {
+        this->output = new char[strlen(other.output) + 1];
+        strcpy((char*)this->output, other.output);
+    } else {
+        this->output = nullptr;
+    }
 }
 
 

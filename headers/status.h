@@ -11,6 +11,7 @@ class Status {
     public:
     Status(int status, const char* output);
     Status(int status); // Status con output vacío
+    Status(const Status &status);
     ~Status();
 
     int getStatus() const;
