@@ -1,5 +1,3 @@
-
-
 #include "../headers/commands.h"
 #include "../headers/status.h"
 #include "../headers/netcommandrequest.h"
@@ -60,11 +58,11 @@ bool checkPort(const char **args)
 remote <ip> <puerto> <comando>
 */
 
-Status remote(int argc, const char **args)
+Status remote_cmd(int argc, const char **args)
 {
     if (argc != 3)
     {
-        return Status(-1, "Error: remote command requires IP, port, and a command. Usage: remote <ip> <port>\n");
+        return Status(-1, "Error: remote command requires an address and a port\n");
     }
 
     if (checkPort(args))
