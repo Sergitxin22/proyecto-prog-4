@@ -8,6 +8,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <signal.h>
 
 /**
  * @brief Bloquea el flujo de la shell para ponerse a escuchar comandos. Al recibir uno, lo ejecuta y envía 
@@ -17,15 +18,15 @@
  * @param args Array de argumentos recibidos
  * @return int 0 si la ejecución fue exitosa
  */
-Status listen(int argc, const char **args)
+Status listen_cmd(int argc, const char **args)
 {
-    
+    signal(SIGPIPE, SIG_IGN);
     
     if (!CURRENT_USER->isAdmin()) {
         return Status(-1, "listen is not a valid command\n");
     }
 
-    if (argc < 1) {
+    if (argc < 2) {
         return Status(-1, "listen: incorrent number of arguments\n");
     }
 
@@ -39,17 +40,22 @@ Status listen(int argc, const char **args)
     
     bind(serverSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress));
     listen(serverSocket, 5);
+    printf("Listening for incoming connections...\n");
     int clientSocket = accept(serverSocket, nullptr, nullptr);
-
+    printf("User connected\n");
     while(1) {
 
         // recieving data
         char buffer[1024] = {0};
-        recv(clientSocket, buffer,1024, 0);
+        int bytes_received = recv(clientSocket, buffer,1024, 0);
+        if (bytes_received <= 0) {
+            printf("Host disconnected\n");
+            break;
+        }
+
         NetCommandRequest req = NetCommandRequest("");
         req.deserialize(buffer);
     
-
         Status *status = NULL;
 
         int arg_count = 0;
@@ -81,14 +87,11 @@ Status listen(int argc, const char **args)
         char response[1024] = {0};
         status->serialize(response);
         send(clientSocket,response,1024, 0);
-         if (strcmp(buffer, "exit") == 0) {
-            break;
-        }
-
+        delete(status);
       
     }
     // closing the socket.
     close(serverSocket);
-    return 0;
-
+    close(clientSocket);
+    return Status(0);
 }
