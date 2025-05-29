@@ -14,3 +14,5 @@ cat,Lee un fichero,cat <fichero>,Imprime en pantalla el contenido del fichero es
 clear,Limpia la terminal,clear,Elimina el texto impreso en la terminal.
 man,Documentacion de la shell,man <comando>,Muestra información de utilidad del comando especificado como argumento.
 printuser,Imprimir el usuario,printuser,Imprime en pantalla el nombre de usuario y su tipo.
+listen,Escuchar comandos remotos,listen <puerto>,Bloquea el flujo de la shell para escuchar comandos remotos en el puerto especificado. Solo disponible para administradores.
+remote,Enviar comandos remotos,remote <ip> <puerto>,Envia comandos a un host que los ejecuta.
