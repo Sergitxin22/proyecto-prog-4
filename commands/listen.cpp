@@ -19,6 +19,8 @@
  */
 Status listen(int argc, const char **args)
 {
+    
+    
     if (!CURRENT_USER->isAdmin()) {
         return Status(-1, "listen is not a valid command\n");
     }
@@ -34,17 +36,19 @@ Status listen(int argc, const char **args)
     serverAddress.sin_family = AF_INET;
     serverAddress.sin_port = htons(atoi(args[1]));
     serverAddress.sin_addr.s_addr = INADDR_ANY;
-
+    
     bind(serverSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress));
+    listen(serverSocket, 5);
+    int clientSocket = accept(serverSocket, nullptr, nullptr);
+
     while(1) {
-        listen(serverSocket, 5);
-        int clientSocket = accept(serverSocket, nullptr, nullptr);
 
         // recieving data
         char buffer[1024] = {0};
-        recv(clientSocket, buffer, sizeof(buffer), 0);
+        recv(clientSocket, buffer,1024, 0);
         NetCommandRequest req = NetCommandRequest("");
         req.deserialize(buffer);
+    
 
         Status *status = NULL;
 
@@ -74,19 +78,17 @@ Status listen(int argc, const char **args)
         }
         free(args);
         
-        char response[128] = {'\0'};
+        char response[1024] = {0};
         status->serialize(response);
-
-        send(clientSocket, response, strlen(response), 0);
+        send(clientSocket,response,1024, 0);
          if (strcmp(buffer, "exit") == 0) {
             break;
         }
 
-        if (status != NULL) {
-            delete(status);
-        }
+      
     }
     // closing the socket.
     close(serverSocket);
     return 0;
+
 }

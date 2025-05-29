@@ -26,7 +26,7 @@ int main(int argc, char const *argv[])
         int arg_count;
 
         // Gets a line of input from the user
-        int prompt_status = prompt(&line);
+        int prompt_status = prompt(&line,0);
         if (prompt_status != 0)
         {
             return -1;

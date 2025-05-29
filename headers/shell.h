@@ -12,7 +12,7 @@ extern User *CURRENT_USER;
 extern char INIT_DIR[128];
 
 
-int prompt(char **line);
+int prompt(char **line,int mode);
 const char **splitArgs(char *input_line, int *arg_count);
 char **getcommands(size_t *outSize);
 

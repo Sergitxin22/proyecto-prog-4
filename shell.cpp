@@ -16,9 +16,8 @@ const char *log_path = LOG_PATH;
 // Incializamos la variable global. Por defecto NO será admin.
 User *CURRENT_USER = new Admin(0, "NULL");
 
-
 // Gets a line of input from the user
-int prompt(char **line)
+int prompt(char **line, int mode)
 {
     *line = (char *)malloc(MAX_PROMPT_LEN * sizeof(char));
     if (*line == NULL)
@@ -26,10 +25,19 @@ int prompt(char **line)
         fprintf(stdout, "malloc failed");
         return -1;
     }
+    if (mode == 1)
+    {
+        printf("\033[0;35m"); // Establece el color de texto de la terminal a morado
+        printf("shellRemote > ");
+        printf("\033[0m"); // Resetea el color al por defecto
+    }
 
-    printf("\033[0;34m"); // Establece el color de texto de la terminal a azul
-    printf("shell > ");
-    printf("\033[0m"); // Resetea el color al por defecto
+    else
+    {
+        printf("\033[0;34m"); // Establece el color de texto de la terminal a azul
+        printf("shell > ");
+        printf("\033[0m"); // Resetea el color al por defecto
+    }
 
     if (fgets(*line, MAX_PROMPT_LEN, stdin) == NULL)
     {
@@ -191,7 +199,7 @@ const int lenCommand = sizeof(commands) / sizeof(Command);
  * @return Un entero que devuelve el codigo de ejecuccion del comando para saber si ha sido correcto
  * o ha habido algun fallo.
  */
-Status* exec(int argc, const char **args)
+Status *exec(int argc, const char **args)
 {
     // Si el primer argumento (nombre del programa) es nulo, se termina la ejecución
     if (args[0] == NULL)

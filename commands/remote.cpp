@@ -3,6 +3,7 @@
 #include "../headers/commands.h"
 #include "../headers/status.h"
 #include "../headers/netcommandrequest.h"
+#include "../headers/shell.h"
 
 #include <cctype>
 #include <string.h>
@@ -14,43 +15,44 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
-
-
 /**
  * Funcion para comprobar si el String es un numero
  */
-bool isAllDigit(const char * c) {
-  int length = strlen(c);
-    for (int i = 0; i < length; i++) {
-        if (!isdigit(c[i])) {
+bool isAllDigit(const char *c)
+{
+    int length = strlen(c);
+    for (int i = 0; i < length; i++)
+    {
+        if (!isdigit(c[i]))
+        {
             return false;
         }
-
     }
 
     return true;
-
 }
 
-bool checkPort(const char **args) {
+bool checkPort(const char **args)
+{
 
-    if (isAllDigit(args[2])) {
-        //Si es un digito, lo convertimos a int  , y comprobamos el rango
+    if (isAllDigit(args[2]))
+    {
+        // Si es un digito, lo convertimos a int  , y comprobamos el rango
 
         int puerto = std::atoi(args[2]);
-        if ((puerto > 0 && puerto < 65536)) {
+        if ((puerto > 0 && puerto < 65536))
+        {
             return true;
-
-        } else {
-            return false;
-
         }
-
-    } else {
-        return false;
-
+        else
+        {
+            return false;
+        }
     }
-
+    else
+    {
+        return false;
+    }
 }
 
 /**
@@ -58,53 +60,81 @@ bool checkPort(const char **args) {
 remote <ip> <puerto> <comando>
 */
 
-Status remote(int argc, const char ** args) {
-    if (argc != 4) {
-        return Status(-1, "Error: remote command requires IP, port, and a command. Usage: remote <ip> <port> <command>");
-
+Status remote(int argc, const char **args)
+{
+    if (argc != 3)
+    {
+        return Status(-1, "Error: remote command requires IP, port, and a command. Usage: remote <ip> <port>\n");
     }
 
-    if (checkPort(args)) {
-      //Crear Cliente Socket
-      int clientSocket = socket(AF_INET,SOCK_STREAM,0);
+    if (checkPort(args))
+    {
+        // Crear Cliente Socket
 
-      if(clientSocket  == - 1){
-          return Status(-1, "Error creating socket");
+        int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
 
-
-       }
-
-      sockaddr_in serverAddress;
-      serverAddress.sin_family = AF_INET; //IPV4
-      serverAddress.sin_port = htons(atoi(args[2])); //PUERTO
-      serverAddress.sin_addr.s_addr = inet_addr(args[1]);
-
-      //Conectarse al servidor
-        if (connect(clientSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) == -1) {
-            return Status(-1, "Error connecting to the other Shell!");
+        if (clientSocket == -1)
+        {
+            return Status(-1, "Error creating socket \n");
         }
 
-      //Enviar el comando
-       char buffer[1024];
-       NetCommandRequest request(args[3]);
-       request.serialize(buffer);
+        sockaddr_in serverAddress;
+        serverAddress.sin_family = AF_INET;            // IPV4
+        serverAddress.sin_port = htons(atoi(args[2])); // PUERTO
+        serverAddress.sin_addr.s_addr = inet_addr(args[1]);
 
-       send(clientSocket,buffer,strlen(buffer),0);
-       close(clientSocket);
-     return Status(0, "Comando enviado con exito!");
+        if (connect(clientSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) == -1)
+        {
+            return Status(-1, "Error connecting to the other Shell! \n");
+        }
+
+        for (;;)
+        {
+
+            char *line = NULL;
+            int promp_status = prompt(&line, 1);
+            if (promp_status != 0)
+            {
+                return Status(-1, "Error");
+            }
+
+            if (strcmp("exit", line) == 0)
+            {
+                printf("exiting remote shell\n");
+                free(line);
+                close(clientSocket);
+                return Status(0);
+            }
+
+          char buffer[1024] = {0};
+          NetCommandRequest request(line);
+          request.serialize(buffer);
+
+          Status response(0);
+
+          send(clientSocket,buffer,1024,0);
+          recv(clientSocket,buffer,1024,0);
+          response.deserialize(buffer);
+          std::cout << response.getOutput();
+
+
+        free(line);
+          
+        }
+
+        close(clientSocket);
 
     }
-    else{
+    else
+    {
 
-      return Status(-2, "Error : The port must be between 0 and 65536");
-
+        return Status(-2, "Error : The port must be between 0 and 65536");
     }
+    return Status(0);
+}
 
-
- }
-
- //Test rapido, esto deberia ir a test_commands
-
+// Test rapido, esto deberia ir a test_commands
+/*
  int main(){
    const char* args1[] = {"remote"}; //Incorrecto, insuficientes argumentos.
    const char* args2[] = {"remote", "192.168.1.1","nosoyunpuerto"}; //Incorrecto, no es un numero
@@ -117,3 +147,4 @@ Status remote(int argc, const char ** args) {
     std::cout << remote(4, args4).getOutput() << std::endl;
 
 }
+*/

@@ -74,7 +74,7 @@ void Status::deserialize(char* buffer) {
     delete [] this->output;
     this->output = new char[outputLength + 1];
     memcpy((char* )this->output,buffer,outputLength);
-    buffer[outputLength] = '\0';
+    this->output[outputLength] = '\0'; 
 
 }
 
