@@ -28,6 +28,8 @@ Status cat_cmd(int arc, const char **args)
     // Introduce el contenido del fichero a file_text
     fread(file_text, 1, file_size, file);
 
+    file_text[file_size] = '\n';
+    file_size++;
     file_text[file_size] = '\0'; // Null-terminate the string
     fclose(file);
     if (file_text == NULL) {
