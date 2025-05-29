@@ -86,6 +86,8 @@ Status remote_cmd(int argc, const char **args)
             return Status(-1, "Error connecting to the other Shell! \n");
         }
 
+        printf("Connection successfully stablished\n");
+
         for (;;)
         {
 

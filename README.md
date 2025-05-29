@@ -11,6 +11,7 @@ This shell provides the most fundamental commands a shell requires to perform si
 - A user system
 - Admin privileges
 - Command log
+- Remote command execution between two hosts
 
 ## Shell database
 The shell features a a local, single-file sqlite3 database to efficiently store command documentation and user data. To do so, it uses the [libsqlite3](https://github.com/LuaDist/libsqlite3) sqlite3 driver, owned by [The Lua Language Distribution](https://luadist.org/).
@@ -38,7 +39,7 @@ When first executing the shell, if the database is not created, the user functio
 This command will create the tables, insert the command documentation and generate two users for testing. "alice", an admin, and "bob", not an admin. The password for both users is "password123". After initializing the database, the shell is ready to be executed normally. Executing the mentioned command again after creation will result in a datababase reset.
 
 ### Configuration file
-The configuration file (`conf.h`) allows the modification of certain configuration variables. In the current version, you can modify the database path with `DB_PATH` and the log file path with `LOG_PATH` 
+The configuration file (`conf.h`) allows the modification of certain configuration variables. In the current version, you can modify the database path with `DB_PATH` and the log file path with `LOG_PATH`
 
 ## Documentation
 You can exit the shell by executing:
@@ -53,6 +54,25 @@ To read the documentation of a specific command, you can run:
 ```
 shell > man <command>
 ```
+
+
+## Remote command execution
+The shell allows a user to remotely execute commands in other system, so long as the other system allows it to. A host (where the command will be executed) can start listening for connections. Another host can connect to the host and remotely execute commands.
+
+In order to start listening, execute the `listen` command and specify a port:
+```
+shell > listen 1337
+Listening for incomming connections...
+```
+
+A client can connect to this port (provided it has access to the address) with the `remote` command. If the listening host is in localhost:
+```
+shell > remote 127.0.0.1 1337
+Connection successfully stablished
+shellRemote >
+```
+
+Every command introduced in shellRemote will be executed in the listening host. Once executed, the output of the command will be sent back to the host that sent the command. Typing `exit`wil close the connection gracefully.
 
 ## License
 This repository follows the GNU General Public License (GPLv3). Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed. For more information, refer to the [Free Software Foundation website](https://fsf.org/) or read `LICENSE`.
