@@ -200,7 +200,7 @@ const int lenCommand = sizeof(commands) / sizeof(Command);
  * @return Un entero que devuelve el codigo de ejecuccion del comando para saber si ha sido correcto
  * o ha habido algun fallo.
  */
-Status *exec(int argc, const char **args)
+Status *exec(int argc, const char **args, int mode)
 {
     // Si el primer argumento (nombre del programa) es nulo, se termina la ejecución
     if (args[0] == NULL)
@@ -214,6 +214,12 @@ Status *exec(int argc, const char **args)
     strcat(log_full_path, "/");
     strcat(log_full_path, log_path);
     FILE *f = fopen(log_full_path, "a");
+    if (f == NULL)
+    {
+        perror("Error al abrir el archivo de log");
+        return new Status(-1, "Error al abrir el archivo de log");
+    }
+
     // Sacar la hora
     time_t t;
     // Puntero a estructura tm definida en time.h
@@ -225,13 +231,15 @@ Status *exec(int argc, const char **args)
     char buffer[26];
     strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_info);
 
+    const char *session_type = mode == 1 ? "REMOTA" : "LOCAL";
+
     if (strcmp(CURRENT_USER->getName(), "NULL") == 0)
     {
-        fprintf(f, "%s | USUARIO ANONIMO HA EJECUTADO EL COMANDO %s \n", buffer, args[0]);
+        fprintf(f, "%s | SESION %s | USUARIO ANONIMO HA EJECUTADO EL COMANDO %s \n", buffer, session_type, args[0]);
     }
     else
     {
-        fprintf(f, "%s | USUARIO %s HA EJECUTADO EL COMANDO %s \n", buffer, CURRENT_USER->getName(), args[0]);
+        fprintf(f, "%s | SESION %s | USUARIO %s HA EJECUTADO EL COMANDO %s \n", buffer, session_type, CURRENT_USER->getName(), args[0]);
         // insert_log(args[0], CURRENT_USER.username, buffer);
     }
     fclose(f);
