@@ -10,10 +10,11 @@
 #include "conf.h"
 #include "headers/db.h"
 #include "headers/command.h"
+#include <iostream>
 
 const char *log_path = LOG_PATH;
 
-// Incializamos la variable global. Por defecto NO será admin.
+// Incializamos la variable global. Por defecto será admin.
 User *CURRENT_USER = new Admin(0, "NULL");
 
 // Gets a line of input from the user
@@ -236,10 +237,13 @@ Status *exec(int argc, const char **args, int mode)
     if (strcmp(CURRENT_USER->getName(), "NULL") == 0)
     {
         fprintf(f, "%s | SESION %s | USUARIO ANONIMO HA EJECUTADO EL COMANDO %s \n", buffer, session_type, args[0]);
+       // std::cout << CURRENT_USER->getName();
+
     }
     else
     {
         fprintf(f, "%s | SESION %s | USUARIO %s HA EJECUTADO EL COMANDO %s \n", buffer, session_type, CURRENT_USER->getName(), args[0]);
+
         // insert_log(args[0], CURRENT_USER.username, buffer);
     }
     fclose(f);

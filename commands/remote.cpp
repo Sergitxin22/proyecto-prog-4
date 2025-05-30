@@ -3,6 +3,7 @@
 #include "../headers/netcommandrequest.h"
 #include "../headers/shell.h"
 #include "../headers/authrequest.h"
+#include "../headers/db.h"
 
 #include <cctype>
 #include <string.h>
@@ -103,9 +104,6 @@ Status remote_cmd(int argc, const char **args)
         AuthRequest auth(username, password);
         char authBuffer[1024] = {0};
         auth.serialize(authBuffer);
-        std::cout << auth.getUsername() << std::endl;
-        std::cout << auth.getPassword() << std::endl;
-        std::cout << authBuffer << std::endl;
         //Enviamos la peticion de Login.
         int len = strlen(authBuffer);
         send(clientSocket, authBuffer,len, 0);
@@ -122,6 +120,16 @@ Status remote_cmd(int argc, const char **args)
             return Status(-1);
         }
 
+        /**
+         * Establecemos nuevo usuario
+         */
+
+        User* PRE_USER  = CURRENT_USER;
+        int idUser = get_user_id(auth.getUsername());
+        CURRENT_USER = new User(idUser,auth.getUsername());
+
+
+        //Guardamos el usuario anterior
 
         printf("Connection successfully stablished\n");
 
@@ -135,11 +143,11 @@ Status remote_cmd(int argc, const char **args)
             }
 
             if (strcmp("exit", line) == 0)
-            {
+            {   
                 printf("exiting remote shell\n");
                 free(line);
-                close(clientSocket);
-                return Status(0);
+                break;
+              
             }
 
             char buffer[1024] = {0};
@@ -156,11 +164,22 @@ Status remote_cmd(int argc, const char **args)
             free(line);
         }
 
-        close(clientSocket);
+          delete(CURRENT_USER);
+          CURRENT_USER = PRE_USER;
+          close(clientSocket);
+          return Status(0);
+
+          //BOrramos el usuario que se ha creado para el remote.
+
+
     }
     else
     {
         return Status(-2, "Error : The port must be between 0 and 65536");
     }
+
+      
+
+
     return Status(0);
 }

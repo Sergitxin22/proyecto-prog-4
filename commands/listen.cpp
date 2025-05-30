@@ -55,21 +55,34 @@ Status listen_cmd(int argc, const char **args)
 
 
     char response[1024];
+    
+
     if (!verify_password(auth.getUsername(), auth.getPassword()))
     {
         Status error(-1, "Error with authentication. Try again. \n");
+        int totalSize = sizeof(int) + sizeof(int) + strlen(error.getOutput()); 
+
         char response[1024];
         error.serialize(response);
-        send(clientSocket, response, sizeof(response), 0);
+        send(clientSocket, response,totalSize, 0);
         close(clientSocket);
         return error;
     }   
         Status success(0);
         success.serialize(response);
-        send(clientSocket, response, sizeof(response), 0);
+        int totalSize = sizeof(int) + sizeof(int) + strlen(success.getOutput()); 
+
+        send(clientSocket, response,totalSize, 0);
 
 
         printf("User connected\n");
+
+        User* PRE_USER  = CURRENT_USER;
+        int idUser = get_user_id(auth.getUsername());
+        CURRENT_USER = new User(idUser,auth.getUsername());
+
+
+
         while (1)
         {   
           
@@ -116,9 +129,19 @@ Status listen_cmd(int argc, const char **args)
 
             char response[1024] = {0};
             status->serialize(response);
-            send(clientSocket, response, 1024, 0);
+            int totalSize = sizeof(int) + sizeof(int) + strlen(status->getOutput()); 
+
+
+
+            send(clientSocket, response,totalSize, 0);
             delete (status);
         }
+        //BOrramos el usuario que se ha creado para el remote.
+        delete(CURRENT_USER);
+        //Vuelta al Usuario original
+        CURRENT_USER = PRE_USER;
+
+
         // closing the socket.
         close(serverSocket);
         close(clientSocket);
