@@ -2,6 +2,7 @@
 #include "../headers/status.h"
 #include "../headers/netcommandrequest.h"
 #include "../headers/shell.h"
+#include "../headers/authrequest.h"
 
 #include <cctype>
 #include <string.h>
@@ -67,6 +68,7 @@ Status remote_cmd(int argc, const char **args)
 
     if (checkPort(args))
     {
+
         // Crear Cliente Socket
 
         int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -85,6 +87,42 @@ Status remote_cmd(int argc, const char **args)
         {
             return Status(-1, "Error connecting to the other Shell! \n");
         }
+
+        /**
+         * Primero comprobamos el Usuario..
+         */
+
+        char username[30];
+        char password[30];
+
+        std::cout << "Username: ";
+        std::cin.getline(username, sizeof(username));
+
+        std::cout << "Password: ";
+        std::cin.getline(password, sizeof(password));
+
+        AuthRequest auth(username, password);
+        char authBuffer[1024] = {0};
+        auth.serialize(authBuffer);
+        std::cout << auth.getUsername() << std::endl;
+        std::cout << auth.getPassword() << std::endl;
+        std::cout << authBuffer << std::endl;
+        //Enviamos la peticion de Login.
+        int len = strlen(authBuffer);
+        send(clientSocket, authBuffer,len, 0);
+
+        // Esperamos respuesta
+        char responseBuffer[1024] = {0};
+        recv(clientSocket, responseBuffer, sizeof(responseBuffer), 0);
+
+        Status loginStatus(-1);
+        loginStatus.deserialize(responseBuffer);
+        if(loginStatus.getStatus() != 0 ){
+            std::cout << loginStatus.getOutput() << std::endl;
+            close(clientSocket);
+            return Status(-1);
+        }
+
 
         printf("Connection successfully stablished\n");
 
@@ -106,24 +144,21 @@ Status remote_cmd(int argc, const char **args)
                 return Status(0);
             }
 
-          char buffer[1024] = {0};
-          NetCommandRequest request(line);
-          request.serialize(buffer);
+            char buffer[1024] = {0};
+            NetCommandRequest request(line);
+            request.serialize(buffer);
 
-          Status response(0);
+            Status response(0);
 
-          send(clientSocket,buffer,1024,0);
-          recv(clientSocket,buffer,1024,0);
-          response.deserialize(buffer);
-          std::cout << response.getOutput();
+            send(clientSocket, buffer, 1024, 0);
+            recv(clientSocket, buffer, 1024, 0);
+            response.deserialize(buffer);
+            std::cout << response.getOutput();
 
-
-        free(line);
-          
+            free(line);
         }
 
         close(clientSocket);
-
     }
     else
     {
@@ -132,19 +167,3 @@ Status remote_cmd(int argc, const char **args)
     }
     return Status(0);
 }
-
-// Test rapido, esto deberia ir a test_commands
-/*
- int main(){
-   const char* args1[] = {"remote"}; //Incorrecto, insuficientes argumentos.
-   const char* args2[] = {"remote", "192.168.1.1","nosoyunpuerto"}; //Incorrecto, no es un numero
-   const char* args3[] = {"remote","192.168.1.1","54"}; //Correcto
-   const char* args4[] = {"remote","192.168.1.1","43434456"}; //Fuera de rango
-
-    std::cout << remote(1, args1).getOutput() << std::endl;
-    std::cout << remote(4, args2).getOutput() << std::endl;
-    std::cout << remote(4, args3).getOutput() << std::endl;
-    std::cout << remote(4, args4).getOutput() << std::endl;
-
-}
-*/

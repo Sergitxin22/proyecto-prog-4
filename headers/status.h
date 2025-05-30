@@ -6,7 +6,7 @@
 class Status {
     private:
     int status; //4 bytes
-    char* output; // Bytes desconocidos
+     char* output; // Bytes desconocidos
 
     public:
     Status(int status, const char* output);
