@@ -67,18 +67,15 @@ Status remote_cmd(int argc, const char **args)
 
     if (checkPort(args))
     {
-        // Crear Cliente Socket
-
         int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
-
         if (clientSocket == -1)
         {
             return Status(-1, "Error creating socket \n");
         }
 
         sockaddr_in serverAddress;
-        serverAddress.sin_family = AF_INET;            // IPV4
-        serverAddress.sin_port = htons(atoi(args[2])); // PUERTO
+        serverAddress.sin_family = AF_INET;
+        serverAddress.sin_port = htons(atoi(args[2]));
         serverAddress.sin_addr.s_addr = inet_addr(args[1]);
 
         if (connect(clientSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) == -1)
@@ -90,7 +87,6 @@ Status remote_cmd(int argc, const char **args)
 
         for (;;)
         {
-
             char *line = NULL;
             int promp_status = prompt(&line, 1);
             if (promp_status != 0)
@@ -106,28 +102,25 @@ Status remote_cmd(int argc, const char **args)
                 return Status(0);
             }
 
-          char buffer[1024] = {0};
-          NetCommandRequest request(line);
-          request.serialize(buffer);
+            char buffer[1024] = {0};
+            NetCommandRequest request(line);
+            request.serialize(buffer);
 
-          Status response(0);
+            Status response(0);
 
-          send(clientSocket,buffer,1024,0);
-          recv(clientSocket,buffer,1024,0);
-          response.deserialize(buffer);
-          std::cout << response.getOutput();
+            send(clientSocket, buffer, 1024, 0);
+            recv(clientSocket, buffer, 1024, 0);
+            response.deserialize(buffer);
 
-
-        free(line);
-          
+            const char **args = splitArgs(line, &argc);
+            exec(argc, args, 1); // Modo remoto
+            free(line);
         }
 
         close(clientSocket);
-
     }
     else
     {
-
         return Status(-2, "Error : The port must be between 0 and 65536");
     }
     return Status(0);
@@ -147,4 +140,3 @@ Status remote_cmd(int argc, const char **args)
     std::cout << remote(4, args4).getOutput() << std::endl;
 
 }
-*/
