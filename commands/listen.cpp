@@ -50,11 +50,7 @@ Status listen_cmd(int argc, const char **args)
 
     AuthRequest auth;
     auth.deserialize(authBuffer);
-    std::cout << auth.getUsername() << std::endl;
-    std::cout << auth.getPassword() << std::endl;
 
-    printf("Raw buffer: [%s]\n", authBuffer);
-    printf("Received bytes: %d\n", received);
 
 
 
