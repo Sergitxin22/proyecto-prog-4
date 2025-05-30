@@ -75,8 +75,8 @@ Status listen_cmd(int argc, const char **args)
 
         printf("User connected\n");
         while (1)
-        {
-            exec(arg_count, args, 1); // Modo remoto
+        {   
+          
 
             // recieving data
             char buffer[1024] = {0};
@@ -96,7 +96,7 @@ Status listen_cmd(int argc, const char **args)
             const char **args = splitArgs(req.getCommand(), &arg_count);
             if (arg_count != -1)
             {
-                status = exec(arg_count, args);
+                status = exec(arg_count, args,1); //Modo remoto
                 // Se imprime el output en el flujo correcto,
                 // (en función del código de estado)
                 if (!status->isOutputEmpty())

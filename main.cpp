@@ -43,7 +43,7 @@ int main(int argc, char const *argv[])
         const char **args = splitArgs(line, &arg_count);
         if (arg_count != -1)
         {
-            Status *status = exec(arg_count, args);
+            Status *status = exec(arg_count, args,0);
             // Se imprime el output en el flujo correcto,
             // (en función del código de estado)
             if (!status->isOutputEmpty())
