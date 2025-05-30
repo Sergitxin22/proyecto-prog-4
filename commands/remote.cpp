@@ -72,15 +72,14 @@ Status remote_cmd(int argc, const char **args)
         // Crear Cliente Socket
 
         int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
-
         if (clientSocket == -1)
         {
             return Status(-1, "Error creating socket \n");
         }
 
         sockaddr_in serverAddress;
-        serverAddress.sin_family = AF_INET;            // IPV4
-        serverAddress.sin_port = htons(atoi(args[2])); // PUERTO
+        serverAddress.sin_family = AF_INET;
+        serverAddress.sin_port = htons(atoi(args[2]));
         serverAddress.sin_addr.s_addr = inet_addr(args[1]);
 
         if (connect(clientSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) == -1)
@@ -128,7 +127,6 @@ Status remote_cmd(int argc, const char **args)
 
         for (;;)
         {
-
             char *line = NULL;
             int promp_status = prompt(&line, 1);
             if (promp_status != 0)
@@ -162,7 +160,6 @@ Status remote_cmd(int argc, const char **args)
     }
     else
     {
-
         return Status(-2, "Error : The port must be between 0 and 65536");
     }
     return Status(0);

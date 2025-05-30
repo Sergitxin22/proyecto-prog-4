@@ -33,9 +33,7 @@ Status listen_cmd(int argc, const char **args)
         return Status(-1, "listen: incorrent number of arguments\n");
     }
 
-    // creating socket
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
-    // specifying the address
     sockaddr_in serverAddress;
     serverAddress.sin_family = AF_INET;
     serverAddress.sin_port = htons(atoi(args[1]));
@@ -78,6 +76,7 @@ Status listen_cmd(int argc, const char **args)
         printf("User connected\n");
         while (1)
         {
+            exec(arg_count, args, 1); // Modo remoto
 
             // recieving data
             char buffer[1024] = {0};

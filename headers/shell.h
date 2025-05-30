@@ -10,13 +10,13 @@
 // Variables globales
 extern User *CURRENT_USER;
 extern char INIT_DIR[128];
+extern int IS_REMOTE; // 1 si es remoto, 0 si es local
 
-
-int prompt(char **line,int mode);
+int prompt(char **line, int mode);
 const char **splitArgs(char *input_line, int *arg_count);
 char **getcommands(size_t *outSize);
 
-Status* exec(int argc, const char **args);
+Status* exec(int argc, const char **args, int mode); // Añadido el parámetro mode
 
 /**
 * Estructura COMMAND que contiene el nombre del Comando y un puntero a la funcion
